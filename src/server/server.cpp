@@ -24,3 +24,21 @@ Server::Server(NetworkAddressType networktype, NetworkProtocolType protocoltype,
   bind(this->socket_descriptor, (struct sockaddr*) &this->addr,sizeof(this->addr));
   listen(this->socket_descriptor, 5);
 }
+
+void Server::waitforincome()
+{
+  sockaddr_in client_addr;
+  socklen_t addrlen;
+  int new_socket;
+  while( (new_socket = accept(this->socket_descriptor,(struct sockaddr *) &client_addr, &addrlen)) < 1);
+  boost::thread sessionthread(&Server::startsession, this, new_socket);
+  this->_sessions.push_back(&sessionthread);
+  sessionthread.join();
+  this->waitforincome();
+}
+
+void Server::startsession(int session_socket_descriptor)
+{
+  std::cout<<"client connected"<<std::endl; 
+}
+
