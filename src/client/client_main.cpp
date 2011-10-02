@@ -1,9 +1,15 @@
 #include <iostream>
 #include <sstream>
 #include <mail.h>
+#include <client.h>
 
 int main(int argc, char **argv) 
 {
+  Client client(Client::IPv4,Client::TCP, 9000);
+  
+  
+  client.connect_to_target("127.0.0.1");
+  /*
   Message * mg = new Mail();
   dynamic_cast<Mail*>(mg)->_msg ="hiiii";
   std::stringstream oss;
@@ -14,5 +20,14 @@ int main(int argc, char **argv)
   boost::archive::text_iarchive ia(oss);
   ia >> msg;
   
-  std::cout<<dynamic_cast<Mail*>(msg)->_msg<<std::endl;
+  switch(msg->getmessagetype())
+  {
+    case Message::mMail:
+      std::cout<< dynamic_cast<Mail*>(msg)->_msg<<std::endl;
+      break;
+      /*case LIST 
+       * case exit
+       * ....usw
+      
+  }*/
 }
