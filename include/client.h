@@ -11,8 +11,8 @@
 class Client : public Networkbase
 {
 public:
-  Client(NetworkAddressType , NetworkProtocolType , int );
-  void connect_to_target(sockaddr * target_addr);
+  Client(NetworkAddressType, NetworkProtocolType, int );
+  void connect_to_target(std::string);
   void send(Message*);
 };
 
