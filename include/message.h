@@ -5,7 +5,7 @@
 #define MESSAGE_H
 class Message
 {  
-  protected:
+  public:
     enum Messagetype
     {
       mMail
