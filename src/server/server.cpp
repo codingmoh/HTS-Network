@@ -19,8 +19,8 @@
 
 #include "server.h"
 
-Server::Server()
+Server::Server(NetworkAddressType networktype, NetworkProtocolType protocoltype, int port ):Networkbase(networktype,protocoltype,port)
 {
-  bind(this->socket_descriptor, this->addr,sizeof(this->addr));
+  bind(this->socket_descriptor, (struct sockaddr*) &this->addr,sizeof(this->addr));
   listen(this->socket_descriptor, 5);
 }

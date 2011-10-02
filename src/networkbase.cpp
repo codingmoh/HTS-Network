@@ -19,7 +19,7 @@
 
 #include "networkbase.h"
 
-Networkbase::Networkbase(Networkbase::NetworkAddressType  addresstype,Networkbase::NetworkProtocolType protocol, int port)
+Networkbase::Networkbase(Networkbase::NetworkAddressType  addresstype, Networkbase::NetworkProtocolType protocol, int port)
 {
   this->socket_descriptor = socket(addresstype, protocol, 0); 
   if(socket_descriptor == -1)

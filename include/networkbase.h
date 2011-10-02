@@ -21,6 +21,8 @@
 #include <arpa/inet.h>
 #include <unistd.h>
 #include <errno.h>
+#include <exception>
+#include <iostream>
 #ifndef NETWORKBASE_H
 #define NETWORKBASE_H
 
