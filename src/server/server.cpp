@@ -17,14 +17,10 @@
 
 */
 
-#include "networkbase.h"
+#include "server.h"
 
-Networkbase::Networkbase(Networkbase::NetworkAddressType  addresstype,Networkbase::NetworkProtocolType protocol, int port)
+Server::Server()
 {
-  this->socket_descriptor = socket(addresstype, protocol, 0); 
-  if(socket_descriptor == -1)
-    throw std::string("exception");
-  addr.sin_family = addresstype;
-  addr.sin_port = port;
-  addr.sin_addr.s_addr = htonl(INADDR_ANY);
+  bind(this->socket_descriptor, this->addr,sizeof(this->addr));
+  listen(this->socket_descriptor, 5);
 }
