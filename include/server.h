@@ -22,7 +22,7 @@
 
 class Server:public Networkbase
 {
-  
+  Server(NetworkAddressType , NetworkProtocolType , int );
 };
 
 #endif // SERVER_H
