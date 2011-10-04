@@ -18,6 +18,7 @@
 */
 #include "networkbase.h"
 #include "boost/thread.hpp"
+#include "message.h"
 #ifndef SERVER_H
 #define SERVER_H
 
@@ -26,10 +27,13 @@ class Server:public Networkbase
 public:
   Server(NetworkAddressType , NetworkProtocolType , int );
   void waitforincome();
-private:
+  std::stringstream _sout;
+private:  
   std::vector<boost::thread*> _sessions;
   std::vector<sockaddr_in> _clientadresses;
   void startsession(int);
+  Message * deserializemessage(char* msg);
+  void executecommand(Message * message);
 };
 
 

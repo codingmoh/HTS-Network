@@ -18,6 +18,8 @@
 */
 
 #include "server.h"
+#include <message.h>
+#include <mail.h>
 
 Server::Server(NetworkAddressType networktype, NetworkProtocolType protocoltype, int port ):Networkbase(networktype,protocoltype,port)
 {
@@ -31,6 +33,7 @@ void Server::waitforincome()
   socklen_t addrlen;
   int new_socket;
   while( (new_socket = accept(this->socket_descriptor,(struct sockaddr *) &client_addr, &addrlen)) < 1);
+  std::cout<<"client connected"<<std::endl;
   boost::thread sessionthread(&Server::startsession, this, new_socket);
   this->_sessions.push_back(&sessionthread);
   sessionthread.join();
@@ -39,6 +42,26 @@ void Server::waitforincome()
 
 void Server::startsession(int session_socket_descriptor)
 {
-  std::cout<<"client connected"<<std::endl; 
+  char buf[2048];
+  recv(session_socket_descriptor, &buf, 2047, 0);
+  std::cout<<"message received"<<std::endl;
+  deserializemessage(buf);
+  this->executecommand(this->deserializemessage(buf));
 }
 
+Message * Server::deserializemessage(char* msg)
+{
+  Message * mesg;
+  std::stringstream ss(msg);
+  boost::archive::text_iarchive ia(ss);
+  ia >> mesg;
+  return mesg;
+}
+
+void Server::executecommand(Message * message)
+{
+ if(message->getmessagetype()==Message::mMail)
+ {
+   std::cout<<"Mail:"<<dynamic_cast<Mail*>(message)->_msg<<std::endl;
+ }
+}

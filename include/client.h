@@ -3,17 +3,24 @@
 #include <arpa/inet.h>
 #include <unistd.h>
 #include <errno.h>
+#include <sstream>
 #include "networkbase.h"
+
+
 #ifndef CLIENT_H
 #define CLIENT_H
 #include "message.h"
 
 class Client : public Networkbase
 {
+private:
+  std::string username;
+  const char * serializemessage(Message *& message);
 public:
-  Client(NetworkAddressType, NetworkProtocolType, int );
-  void connect_to_target(std::string);
-  void send(Message*);
+  Client(NetworkAddressType, NetworkProtocolType, int, std::string);
+  bool connect_to_target(std::string);
+  std::string getusername();	
+  void sendmessage(Message*&);
 };
 
 #endif // CLIENT_H
