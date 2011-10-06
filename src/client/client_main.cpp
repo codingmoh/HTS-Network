@@ -1,7 +1,7 @@
 #include <iostream>
 #include <sstream>
-#include <mail.h>
-#include <client.h>
+#include "mail.h"
+#include "client.h"
 
 int main(int argc, char **argv) 
 {
@@ -29,9 +29,18 @@ int main(int argc, char **argv)
     
     if(command == "SEND")
     {
-	Message * m = new Mail();
-	dynamic_cast<Mail*>(m)->_msg = "hullahup!";
+        std::string from, to, subject, message;
+	std::cout<<"From:";
+	std::cin>>from;
+	std::cout<<std::endl<<"To:";
+	std::cin>>to;
+	std::cout<<std::endl<<"Subject:";
+	std::cin>>subject;
+	std::cout<<std::endl<<"Message:";
+	std::cin>>message;
+	Message * m = new Mail(to,from,subject,message);	
 	client.sendmessage(m);
+	delete m;
     }
   }
   
