@@ -22,7 +22,9 @@ void Session::startrecieveing()
     //SEND OK
   }
   else
+  {
     //SEND ERR
+  }
 }
 Message * Session::deserializemessage(char* msg)
 {
