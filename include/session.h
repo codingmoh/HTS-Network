@@ -12,7 +12,7 @@ private:
   int socketid;
   void startrecieveing();
   Message * deserializemessage(char* msg);
-  void executecommand(Message * message);
+  bool executecommand(Message * message);
 public:
   Session(int socketid);
   void start();

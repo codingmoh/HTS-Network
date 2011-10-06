@@ -33,7 +33,7 @@ Message * Session::deserializemessage(char* msg)
   return mesg;
 }
 
-void Session::executecommand(Message * message)
+bool Session::executecommand(Message * message)
 {
  if(message->getmessagetype()==Message::mMail)
  {
