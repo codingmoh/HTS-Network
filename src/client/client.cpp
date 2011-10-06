@@ -1,5 +1,5 @@
-#include "client.h"
 #include <string.h>
+#include "client.h"
 
 Client::Client(NetworkAddressType addresstype, NetworkProtocolType protocoltype, int port, std::string username):Networkbase(addresstype, protocoltype, port)
 {
