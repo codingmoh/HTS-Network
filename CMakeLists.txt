@@ -6,5 +6,5 @@ link_libraries(boost_thread)
 SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/build)
 
 ADD_EXECUTABLE(client src/networkbase.cpp src/client/client.cpp src/client/client_main.cpp)
-ADD_EXECUTABLE(server src/networkbase.cpp src/server/server.cpp src/server/server_main.cpp)
+ADD_EXECUTABLE(server src/server/directory.cpp src/session.cpp src/networkbase.cpp src/server/server.cpp src/server/server_main.cpp)
 
