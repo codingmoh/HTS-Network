@@ -9,6 +9,9 @@ class Mail:public Message
     {
        boost::serialization::base_object<Message>(*this);
        ar & _msg;
+       ar & _receiver;
+       ar & _sender;
+       ar & _subject;
     };
  public:
     std::string _receiver;
