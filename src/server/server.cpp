@@ -17,16 +17,16 @@
 
 */
 
-#include "server.h"
+#include <server.h>
 #include <message.h>
 #include <mail.h>
 
-Server::Server(NetworkAddressType networktype, NetworkProtocolType protocoltype, int port ):Networkbase(networktype,protocoltype,port)
+Server::Server(NetworkAddressType networktype, NetworkProtocolType protocoltype, int port, Directory & rootdir):Networkbase(networktype,protocoltype,port)
 {
+  this->rootdirectory = &rootdir;
   bind(this->socket_descriptor, (struct sockaddr*) &this->addr,sizeof(this->addr));
   listen(this->socket_descriptor, 5);
 }
-
 void Server::waitforincome()
 {
   sockaddr_in client_addr;
@@ -34,34 +34,14 @@ void Server::waitforincome()
   int new_socket;
   while( (new_socket = accept(this->socket_descriptor,(struct sockaddr *) &client_addr, &addrlen)) < 1);
   std::cout<<"client connected"<<std::endl;
-  boost::thread sessionthread(&Server::startsession, this, new_socket);
-  this->_sessions.push_back(&sessionthread);
-  sessionthread.join();
+  Session *  session = new Session(new_socket);
+  sessions.push_back(session);
+  session->start();
   this->waitforincome();
 }
 
-void Server::startsession(int session_socket_descriptor)
-{
-  char buf[2048];
-  recv(session_socket_descriptor, &buf, 2047, 0);
-  std::cout<<"message received"<<std::endl;
-  deserializemessage(buf);
-  this->executecommand(this->deserializemessage(buf));
-}
 
-Message * Server::deserializemessage(char* msg)
+Server::~Server()
 {
-  Message * mesg;
-  std::stringstream ss(msg);
-  boost::archive::text_iarchive ia(ss);
-  ia >> mesg;
-  return mesg;
-}
-
-void Server::executecommand(Message * message)
-{
- if(message->getmessagetype()==Message::mMail)
- {
-   std::cout<<"Mail:"<<dynamic_cast<Mail*>(message)->_msg<<std::endl;
- }
+  //KILL SESSIONS
 }
