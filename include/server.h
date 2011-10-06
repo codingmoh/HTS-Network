@@ -16,21 +16,32 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 */
-#include "networkbase.h"
-#include "boost/thread.hpp"
+#include <networkbase.h>
+#include <boost/thread.hpp>
+#include <boost/archive/text_oarchive.hpp>
+#include <boost/archive/text_iarchive.hpp>
+#include "session.h"
 #include "message.h"
+#include "directory.h"
 #ifndef SERVER_H
 #define SERVER_H
 
 class Server:public Networkbase
 {
 public:
-  Server(NetworkAddressType , NetworkProtocolType , int );
-  void waitforincome();
   std::stringstream _sout;
-private:  
-  std::vector<boost::thread*> _sessions;
+private:
+  std::vector<Session*> sessions;
   std::vector<sockaddr_in> _clientadresses;
+  std::map<int, Directory*> user_directories;
+  Directory * rootdirectory;
+  
+public:
+  Server(NetworkAddressType, NetworkProtocolType,int, Directory &);
+  void waitforincome();
+  ~Server();
+private:  
+  void createdirectory();
   void startsession(int);
   Message * deserializemessage(char* msg);
   void executecommand(Message * message);
