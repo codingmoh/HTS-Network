@@ -4,12 +4,14 @@
 #include <unistd.h>
 #include <errno.h>
 #include <sstream>
+#include <boost/archive/text_oarchive.hpp>
+#include <boost/archive/text_iarchive.hpp>
 #include "networkbase.h"
-
+#include "mail.h"
 
 #ifndef CLIENT_H
 #define CLIENT_H
-#include "message.h"
+
 
 class Client : public Networkbase
 {
