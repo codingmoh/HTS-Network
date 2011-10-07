@@ -29,8 +29,8 @@ public:
 	Directory(std::string path);
 	Directory * adduserdirectory(std::string);
 	void savemessage(Mail&);
-	void savemessage();
-	Message** getmessages();
+	Message** getmessages(std::string);
+	Message* getmessage(std::string, int);
 
 private:
 	bool exists(std::string);

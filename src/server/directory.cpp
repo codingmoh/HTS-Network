@@ -41,18 +41,20 @@ void Directory::savemessage(Mail& msg) {
 	std::cout << messagenumber << std::endl;
 	existsmaildirOtherwiseCreate(msg._receiver, messagenumber);
 
-	std::string pa = pool_path + "/" + msg._receiver + "/" + messagenumber;
-	char file[1000]; //path
-	for (int i = 0; i <= pa.size(); i++) {
-		file[i] = pa[i];
-	}
+	std::string file = pool_path + "/" + msg._receiver + "/" + messagenumber
+			+ "/message.txt";
 
-	std::ofstream myfile;
-	myfile.open(file + "/message.txt");
-	myfile << msg._sender << ";;" << msg._receiver << ";;" << msg._subject
-			<< ";;" << msg._msg << "\n";
+	std::ofstream myfile(file.c_str());
+	boost::archive::text_oarchive oa(myfile);
+	oa << msg;
 	myfile.close();
 
+	/**std::ifstream myfile2(file.c_str());
+	Mail  msg2;
+	boost::archive::text_iarchive ia(myfile2);
+	ia >> msg2;
+	std::cout<<msg2._sender<<std::endl;
+	myfile2.close();**/
 }
 
 Directory * Directory::adduserdirectory(std::string user) {
@@ -108,15 +110,10 @@ std::string Directory::getfreemessagenumber(std::string receiver) {
 }
 
 bool Directory::exists(std::string path) {
-	char pa[100]; //path
-	for (int i = 0; i <= path.size(); i++) {
-		pa[i] = path[i];
-	}
-
 	DIR *pDir;
 	bool bExists = false;
 
-	pDir = opendir(pa);
+	pDir = opendir(path.c_str());
 
 	if (pDir != NULL) {
 		bExists = true;
@@ -127,9 +124,6 @@ bool Directory::exists(std::string path) {
 
 }
 void Directory::create(std::string path) {
-	char pa[100]; //path
-	for (int i = 0; i <= path.size(); i++) {
-		pa[i] = path[i];
-	}
-	mkdir(pa, 0777);
+
+	mkdir(path.c_str(), 0777);
 }
