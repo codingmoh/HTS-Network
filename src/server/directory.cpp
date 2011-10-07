@@ -24,13 +24,35 @@
 #include <errno.h>
 #include <dirent.h>
 #include <stdio.h>
+#include <sstream>
+#include <iostream>
+#include <fstream>
 Directory::Directory(std::string path) {
 	pool_path = path;
 	existspoolpathOtherwiseCreate();
 }
 
-void Directory::savemessage(Mail& message){
-	std::cout<< "oha" <<std::endl;
+void Directory::savemessage(Mail& msg) {
+	std::cout << "savemessage" << std::endl;
+
+	adduserdirectory(msg._receiver);
+
+	std::string messagenumber = getfreemessagenumber(msg._receiver);
+	std::cout << messagenumber << std::endl;
+	existsmaildirOtherwiseCreate(msg._receiver, messagenumber);
+
+	std::string pa = pool_path + "/" + msg._receiver + "/" + messagenumber;
+	char file[1000]; //path
+	for (int i = 0; i <= pa.size(); i++) {
+		file[i] = pa[i];
+	}
+
+	std::ofstream myfile;
+	myfile.open(file + "/message.txt");
+	myfile << msg._sender << ";;" << msg._receiver << ";;" << msg._subject
+			<< ";;" << msg._msg << "\n";
+	myfile.close();
+
 }
 
 Directory * Directory::adduserdirectory(std::string user) {
@@ -58,6 +80,30 @@ bool Directory::existsuserdirOtherwiseCreate(std::string user) {
 	} else {
 		std::cout << "donothing2" << std::endl;
 		return 1;
+	}
+}
+bool Directory::existsmaildirOtherwiseCreate(std::string receiver,
+		std::string messagenumber) {
+	if (exists(pool_path + "/" + receiver + "/" + messagenumber) == 0) {
+		std::cout << "dosomething3" << std::endl;
+		create(pool_path + "/" + receiver + "/" + messagenumber);
+		return 0;
+	} else {
+		std::cout << "donothing3" << std::endl;
+		return 1;
+	}
+}
+
+std::string Directory::getfreemessagenumber(std::string receiver) {
+	int i = 0;
+	while (true) {
+		std::ostringstream sin;
+		sin << i;
+		std::string val = sin.str();
+		if (exists(pool_path + "/" + receiver + "/" + val) == 0) {
+			return val;
+		}
+		i++;
 	}
 }
 
