@@ -30,7 +30,7 @@ Directory::Directory(std::string path) {
 }
 
 void Directory::savemessage(Mail& message){
-	std::cout<<"oha"<<std::endl;
+	std::cout<< "oha" <<std::endl;
 }
 
 Directory * Directory::adduserdirectory(std::string user) {

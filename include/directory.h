@@ -25,8 +25,7 @@
 
 
 
-class Directory
-{
+class Directory {
 public:
   std::string pool_path;
   Directory(std::string path);
