@@ -1,9 +1,9 @@
 #include <session.h>
 
 
-Session::Session(int socketid)
+Session::Session(int socketid, Directory& userdir):userdir(userdir), socketid(socketid)
 {
-  this->socketid = socketid;
+  
 }
 
 void Session::start()

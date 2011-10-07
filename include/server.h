@@ -34,7 +34,7 @@ private:
   std::vector<Session*> sessions;
   std::vector<sockaddr_in> _clientadresses;
   std::map<int, Directory*> user_directories;
-  Directory * rootdirectory;
+  Directory& rootdirectory;
   
 public:
   Server(NetworkAddressType, NetworkProtocolType,int, Directory &);

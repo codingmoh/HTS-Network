@@ -21,10 +21,11 @@
 #include <message.h>
 #include <mail.h>
 
-Server::Server(NetworkAddressType networktype, NetworkProtocolType protocoltype, int port, Directory & rootdir):Networkbase(networktype,protocoltype,port)
+Server::Server(NetworkAddressType networktype, NetworkProtocolType protocoltype,int port, Directory & rootdir):
+	       Networkbase(networktype,protocoltype,port), rootdirectory(rootdir)
 {
-  this->rootdirectory = &rootdir;
-  bind(this->socket_descriptor, (struct sockaddr*) &this->addr,sizeof(this->addr));
+  bind(this->socket_descriptor, 
+       (struct sockaddr*) &this->addr,sizeof(this->addr));
   listen(this->socket_descriptor, 5);
 }
 void Server::waitforincome()
@@ -32,9 +33,9 @@ void Server::waitforincome()
   sockaddr_in client_addr;
   socklen_t addrlen;
   int new_socket;
-  while( (new_socket = accept(this->socket_descriptor,(struct sockaddr *) &client_addr, &addrlen)) < 1);
+  while((new_socket = accept(this->socket_descriptor,(struct sockaddr *) &client_addr, &addrlen))< 1);
   std::cout<<"client connected"<<std::endl;
-  Session *  session = new Session(new_socket);
+  Session *  session = new Session(new_socket,this->rootdirectory);
   sessions.push_back(session);
   session->start();
   this->waitforincome();

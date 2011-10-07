@@ -31,7 +31,7 @@ public:
   Directory(std::string path);
   Directory * adddirectory(std::string);
   void savemessage(Mail&);
-  Message** getmessages();
+  Mail*_getmessages();
 };
 
 #endif // DIRECTORY_H

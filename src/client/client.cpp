@@ -1,9 +1,12 @@
 #include <string.h>
 #include "client.h"
 
-Client::Client(NetworkAddressType addresstype, NetworkProtocolType protocoltype, int port, std::string username):Networkbase(addresstype, protocoltype, port)
+Client::Client(NetworkAddressType addresstype, 
+	       NetworkProtocolType protocoltype, 
+	       int port, std::string username):
+	       Networkbase(addresstype, protocoltype, port), username(username)
 {
- this->username =  username;
+ 
 }
 
 bool Client::connect_to_target(std::string ip)
