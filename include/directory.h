@@ -25,13 +25,23 @@
 
 
 
-class Directory
-{
+class Directory {
 public:
+  std::string pool_path;
   Directory(std::string path);
-  Directory * adddirectory(std::string);
+  Directory * adduserdirectory(std::string);
   void savemessage(Mail&);
+<<<<<<< HEAD
   Mail*_getmessages();
+=======
+  Message** getmessages();
+
+private:
+  bool exists(std::string);
+  bool existspoolpathOtherwiseCreate();
+  bool existsuserdirOtherwiseCreate(std::string);
+  void create(std::string);
+>>>>>>> 1818878006b0a2a668f9baab888de7c475dc168d
 };
 
 #endif // DIRECTORY_H
