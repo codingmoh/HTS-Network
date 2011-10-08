@@ -32,76 +32,149 @@ Directory::Directory(std::string path) {
 	existspoolpathOtherwiseCreate();
 }
 
-void Directory::savemessage(Mail& msg) {
-	std::cout << "savemessage" << std::endl;
+bool Directory::savemessage(Mail& msg) {
+	if (adduserdirectory(msg._receiver) == 1) {
 
-	adduserdirectory(msg._receiver);
+		std::string messagenumber = getfreemessagenumber(msg._receiver);
+		if (existsmaildirOtherwiseCreate(msg._receiver, messagenumber)) {
 
-	std::string messagenumber = getfreemessagenumber(msg._receiver);
-	std::cout << messagenumber << std::endl;
-	existsmaildirOtherwiseCreate(msg._receiver, messagenumber);
+			std::string file = pool_path + "/" + msg._receiver + "/"
+					+ messagenumber + "/message.txt";
 
-	std::string file = pool_path + "/" + msg._receiver + "/" + messagenumber
-			+ "/message.txt";
+			std::ofstream myfile(file.c_str());
+			boost::archive::text_oarchive oa(myfile);
+			oa << msg;
+			myfile.close();
 
-	std::ofstream myfile(file.c_str());
-	boost::archive::text_oarchive oa(myfile);
-	oa << msg;
-	myfile.close();
+			return 1;
+		} else {
+			return 0; //fehler beim erstellen des usermailordners
+		}
+	} else {
+		return 0; //fehler beim erstellen des userordners
+	}
 
 	/**std::ifstream myfile2(file.c_str());
-	Mail  msg2;
-	boost::archive::text_iarchive ia(myfile2);
-	ia >> msg2;
-	std::cout<<msg2._sender<<std::endl;
-	myfile2.close();**/
+	 Mail  msg2;
+	 boost::archive::text_iarchive ia(myfile2);
+	 ia >> msg2;
+	 std::cout<<"-------------"<<msg2._msg<<std::endl;
+	 myfile2.close();**/
+}
+bool Directory::removemessage(std::string from, int number) {
+	if (from.size() < 1 || from.size() > 8 || number < 0) {
+		return 0; //parameterfehler
+	}
+	std::ostringstream tmp;
+	tmp << number;
+	std::string messagenumber = tmp.str();
+	if (existsuserdir(from) == 1) {
+		if (existsmaildir(from, messagenumber) == 1) {
+
+			std::string file = pool_path + "/" + from + "/" + messagenumber;
+			std::string command = "rm -r " + file;
+			if (system(command.c_str()) == 0) {
+				std::cout << "remove messagenumber <" << number << "> from <"
+						<< from << "> (" << file << ")" << std::endl;
+				return 1;
+			} else {
+				return 0; //fehler beim loeschen
+			}
+
+		} else {
+			return 0; //mail existiert nicht
+		}
+	} else {
+		return 0; //user existiert nicht
+	}
+}
+Message* Directory::getmessage(std::string from, int number) {
+	std::ostringstream tmp;
+	tmp << number;
+	std::string messagenumber = tmp.str();
+	if (existsuserdir(from) == 1) {
+		if (existsmaildir(from, messagenumber) == 1) {
+
+			std::string file = pool_path + "/" + from + "/" + messagenumber
+					+ "/message.txt";
+			if (fileexists(file) == 1) {
+
+				std::ifstream myfile(file.c_str());
+				std::cout << "hi1" << std::endl;
+				Mail* msg = new Mail();
+				std::cout << "hi2" << std::endl;
+				boost::archive::text_iarchive ia(myfile);
+				std::cout << "hi3" << std::endl;
+				ia >> msg;
+				std::cout << "hi4" << std::endl;
+				myfile.close();
+				std::cout << "hi5" << std::endl;
+				return msg;
+			} else {
+				//message nicht vorhanden
+			}
+		} else {
+			// mailordner existiert nicht
+		}
+	} else {
+		// user existiert nicht
+	}
 }
 
-Directory * Directory::adduserdirectory(std::string user) {
-	std::cout << user << std::endl;
-	existspoolpathOtherwiseCreate();
-	existsuserdirOtherwiseCreate(user);
-
+bool Directory::adduserdirectory(std::string user) {
+	if (existspoolpathOtherwiseCreate() == 1) {
+		if (existsuserdirOtherwiseCreate(user) == 1) {
+			return 1;
+		} else {
+			return 0; //fehler beim erstellen des userverzeichnisses
+		}
+	} else {
+		return 0; // fehler beim erstellen des poolverzeichnisses
+	}
 }
 
 bool Directory::existspoolpathOtherwiseCreate() {
 	if (exists(pool_path) == 0) {
-		std::cout << "dosomething" << std::endl;
-		create( pool_path);
-		return 0;
+		return create(pool_path);
 	} else {
-		std::cout << "donothing" << std::endl;
-		return 1;
+		return 1; //poolpath vorhanden
 	}
 }
 bool Directory::existsuserdirOtherwiseCreate(std::string user) {
-	if (exists(pool_path + "/" + user) == 0) {
-		std::cout << "dosomething2" << std::endl;
-		create(pool_path + "/" + user);
-		return 0;
+	if (existsuserdir(user) == 0) {
+		return create(pool_path + "/" + user);
 	} else {
-		std::cout << "donothing2" << std::endl;
-		return 1;
+		return 1; //userpath vorhanden
 	}
 }
 bool Directory::existsmaildirOtherwiseCreate(std::string receiver,
 		std::string messagenumber) {
-	if (exists(pool_path + "/" + receiver + "/" + messagenumber) == 0) {
-		std::cout << "dosomething3" << std::endl;
-		create(pool_path + "/" + receiver + "/" + messagenumber);
+	if (existsmaildir(receiver, messagenumber) == 0) {
+		return create(pool_path + "/" + receiver + "/" + messagenumber);
+	} else {
+		return 1; //usermailpath vorhanden
+	}
+}
+bool Directory::existsuserdir(std::string user) {
+	if (exists(pool_path + "/" + user) == 0) {
 		return 0;
 	} else {
-		std::cout << "donothing3" << std::endl;
 		return 1;
 	}
 }
-
+bool Directory::existsmaildir(std::string receiver, std::string messagenumber) {
+	if (exists(pool_path + "/" + receiver + "/" + messagenumber) == 0) {
+		return 0;
+	} else {
+		return 1;
+	}
+}
 std::string Directory::getfreemessagenumber(std::string receiver) {
 	int i = 0;
 	while (true) {
-		std::ostringstream sin;
-		sin << i;
-		std::string val = sin.str();
+		std::ostringstream tmp;
+		tmp << i;
+		std::string val = tmp.str();
 		if (exists(pool_path + "/" + receiver + "/" + val) == 0) {
 			return val;
 		}
@@ -123,7 +196,22 @@ bool Directory::exists(std::string path) {
 	return bExists;
 
 }
-void Directory::create(std::string path) {
-
-	mkdir(path.c_str(), 0777);
+bool Directory::fileexists(std::string path) {
+	bool flag = false;
+	std::fstream fin;
+	fin.open(path.c_str());
+	if (fin.is_open()) {
+		std::cout << "file exists" << std::endl;
+		flag = true;
+	}
+	fin.close();
+	return flag;
+}
+bool Directory::create(std::string path) {
+	if (mkdir(path.c_str(), 0777) != 0) {
+		return 0;
+	} else {
+		std::cout << "mkdir <" << path << ">" << std::endl;
+		return 1; //alles ok beim erstellen des ordners}
+	}
 }

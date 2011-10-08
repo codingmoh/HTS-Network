@@ -27,18 +27,22 @@ class Directory {
 public:
 	std::string pool_path;
 	Directory(std::string path);
-	Directory * adduserdirectory(std::string);
-	void savemessage(Mail&);
+	bool adduserdirectory(std::string);
+	bool savemessage(Mail&);
 	Message** getmessages(std::string);
 	Message* getmessage(std::string, int);
+	bool removemessage(std::string, int);
 
 private:
 	bool exists(std::string);
+	bool fileexists(std::string);
 	bool existspoolpathOtherwiseCreate();
+	bool existsuserdir(std::string);
 	bool existsuserdirOtherwiseCreate(std::string);
+	bool existsmaildir(std::string, std::string);
 	bool existsmaildirOtherwiseCreate(std::string, std::string);
 	std::string getfreemessagenumber(std::string);
-	void create(std::string);
+	bool create(std::string);
 };
 
 #endif // DIRECTORY_H
