@@ -30,7 +30,7 @@ public:
 	bool adduserdirectory(std::string);
 	bool savemessage(Mail&);
 	Message** getmessages(std::string);
-	Message* getmessage(std::string, int);
+	Mail* getmessage(std::string, int);
 	bool removemessage(std::string, int);
 
 private:
