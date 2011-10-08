@@ -23,13 +23,14 @@
 #define DIRECTORY_H
 #include "mail.h"
 
-class Directory {
+class Directory
+{
 public:
 	std::string pool_path;
 	Directory(std::string path);
 	bool adduserdirectory(std::string);
 	bool savemessage(Mail&);
-	Message** getmessages(std::string);
+	Mail** getmessages(std::string);
 	Mail* getmessage(std::string, int);
 	bool removemessage(std::string, int);
 
@@ -43,6 +44,7 @@ private:
 	bool existsmaildirOtherwiseCreate(std::string, std::string);
 	std::string getfreemessagenumber(std::string);
 	bool create(std::string);
+	int getdir(std::string, std::vector<int> &);
 };
 
 #endif // DIRECTORY_H
