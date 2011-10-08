@@ -27,186 +27,253 @@
 #include <sstream>
 #include <iostream>
 #include <fstream>
-Directory::Directory(std::string path) {
-	pool_path = path;
-	existspoolpathOtherwiseCreate();
+Directory::Directory ( std::string path )
+{
+    pool_path = path;
+    existspoolpathOtherwiseCreate();
 }
 
-bool Directory::savemessage(Mail& msg) {
-	if (adduserdirectory(msg._receiver) == 1) {
+bool Directory::savemessage ( Mail& msg )
+{
+    if ( adduserdirectory ( msg._receiver ) == 1 )
+    {
 
-		std::string messagenumber = getfreemessagenumber(msg._receiver);
-		if (existsmaildirOtherwiseCreate(msg._receiver, messagenumber)) {
+        std::string messagenumber = getfreemessagenumber ( msg._receiver );
+        if ( existsmaildirOtherwiseCreate ( msg._receiver, messagenumber ) )
+        {
 
-			std::string file = pool_path + "/" + msg._receiver + "/"
-					+ messagenumber + "/message.txt";
+            std::string file = pool_path + "/" + msg._receiver + "/"
+                               + messagenumber + "/message.txt";
 
-			std::ofstream myfile(file.c_str());
-			boost::archive::text_oarchive oa(myfile);
-			oa << msg;
-			myfile.close();
+            std::ofstream myfile ( file.c_str() );
+            boost::archive::text_oarchive oa ( myfile );
+            oa << msg;
+            myfile.close();
 
-			return 1;
-		} else {
-			return 0; //fehler beim erstellen des usermailordners
-		}
-	} else {
-		return 0; //fehler beim erstellen des userordners
-	}
+            return 1;
+        }
+        else
+        {
+            return 0; //fehler beim erstellen des usermailordners
+        }
+    }
+    else
+    {
+        return 0; //fehler beim erstellen des userordners
+    }
 
-	/**std::ifstream myfile2(file.c_str());
-	 Mail  msg2;
-	 boost::archive::text_iarchive ia(myfile2);
-	 ia >> msg2;
-	 std::cout<<"-------------"<<msg2._msg<<std::endl;
-	 myfile2.close();**/
+    /**std::ifstream myfile2(file.c_str());
+     Mail  msg2;
+     boost::archive::text_iarchive ia(myfile2);
+     ia >> msg2;
+     std::cout<<"-------------"<<msg2._msg<<std::endl;
+     myfile2.close();**/
 }
-bool Directory::removemessage(std::string from, int number) {
-	if (from.size() < 1 || from.size() > 8 || number < 0) {
-		return 0; //parameterfehler
-	}
-	std::ostringstream tmp;
-	tmp << number;
-	std::string messagenumber = tmp.str();
-	if (existsuserdir(from) == 1) {
-		if (existsmaildir(from, messagenumber) == 1) {
+bool Directory::removemessage ( std::string from, int number )
+{
+    if ( from.size() < 1 || from.size() > 8 || number < 0 )
+    {
+        return 0; //parameterfehler
+    }
+    std::ostringstream tmp;
+    tmp << number;
+    std::string messagenumber = tmp.str();
+    if ( existsuserdir ( from ) == 1 )
+    {
+        if ( existsmaildir ( from, messagenumber ) == 1 )
+        {
 
-			std::string file = pool_path + "/" + from + "/" + messagenumber;
-			std::string command = "rm -r " + file;
-			if (system(command.c_str()) == 0) {
-				std::cout << "remove messagenumber <" << number << "> from <"
-						<< from << "> (" << file << ")" << std::endl;
-				return 1;
-			} else {
-				return 0; //fehler beim loeschen
-			}
+            std::string file = pool_path + "/" + from + "/" + messagenumber;
+            std::string command = "rm -r " + file;
+            if ( system ( command.c_str() ) == 0 )
+            {
+                std::cout << "remove messagenumber <" << number << "> from <"
+                          << from << "> (" << file << ")" << std::endl;
+                return 1;
+            }
+            else
+            {
+                return 0; //fehler beim loeschen
+            }
 
-		} else {
-			return 0; //mail existiert nicht
-		}
-	} else {
-		return 0; //user existiert nicht
-	}
+        }
+        else
+        {
+            return 0; //mail existiert nicht
+        }
+    }
+    else
+    {
+        return 0; //user existiert nicht
+    }
 }
-Mail* Directory::getmessage(std::string from, int number) {
-	std::ostringstream tmp;
-	tmp << number;
-	std::string messagenumber = tmp.str();
-	if (existsuserdir(from) == 1) {
-		if (existsmaildir(from, messagenumber) == 1) {
+Mail* Directory::getmessage ( std::string from, int number )
+{
+    std::ostringstream tmp;
+    tmp << number;
+    std::string messagenumber = tmp.str();
+    if ( existsuserdir ( from ) == 1 )
+    {
+        if ( existsmaildir ( from, messagenumber ) == 1 )
+        {
 
-			std::string file = pool_path + "/" + from + "/" + messagenumber
-					+ "/message.txt";
-			if (fileexists(file)== 1) {
+            std::string file = pool_path + "/" + from + "/" + messagenumber
+                               + "/message.txt";
+            if ( fileexists ( file ) == 1 )
+            {
 
-				std::ifstream myfile(file.c_str());
-				Mail* msg = new Mail();
-				boost::archive::text_iarchive ia(myfile);
-				ia >> *msg;
-				myfile.close();
-				return msg;
-			} else {
-				//message nicht vorhanden
-			}
-		} else {
-			// mailordner existiert nicht
-		}
-	} else {
-		// user existiert nicht
-	}
-}
-
-bool Directory::adduserdirectory(std::string user) {
-	if (existspoolpathOtherwiseCreate() == 1) {
-		if (existsuserdirOtherwiseCreate(user) == 1) {
-			return 1;
-		} else {
-			return 0; //fehler beim erstellen des userverzeichnisses
-		}
-	} else {
-		return 0; // fehler beim erstellen des poolverzeichnisses
-	}
-}
-
-bool Directory::existspoolpathOtherwiseCreate() {
-	if (exists(pool_path) == 0) {
-		return create(pool_path);
-	} else {
-		return 1; //poolpath vorhanden
-	}
-}
-bool Directory::existsuserdirOtherwiseCreate(std::string user) {
-	if (existsuserdir(user) == 0) {
-		return create(pool_path + "/" + user);
-	} else {
-		return 1; //userpath vorhanden
-	}
-}
-bool Directory::existsmaildirOtherwiseCreate(std::string receiver,
-		std::string messagenumber) {
-	if (existsmaildir(receiver, messagenumber) == 0) {
-		return create(pool_path + "/" + receiver + "/" + messagenumber);
-	} else {
-		return 1; //usermailpath vorhanden
-	}
-}
-bool Directory::existsuserdir(std::string user) {
-	if (exists(pool_path + "/" + user) == 0) {
-		return 0;
-	} else {
-		return 1;
-	}
-}
-bool Directory::existsmaildir(std::string receiver, std::string messagenumber) {
-	if (exists(pool_path + "/" + receiver + "/" + messagenumber) == 0) {
-		return 0;
-	} else {
-		return 1;
-	}
-}
-std::string Directory::getfreemessagenumber(std::string receiver) {
-	int i = 0;
-	while (true) {
-		std::ostringstream tmp;
-		tmp << i;
-		std::string val = tmp.str();
-		if (exists(pool_path + "/" + receiver + "/" + val) == 0) {
-			return val;
-		}
-		i++;
-	}
+                std::ifstream myfile ( file.c_str() );
+                Mail* msg = new Mail();
+                boost::archive::text_iarchive ia ( myfile );
+                ia >> *msg;
+                myfile.close();
+                return msg;
+            }
+            else
+            {
+                //message nicht vorhanden
+            }
+        }
+        else
+        {
+            // mailordner existiert nicht
+        }
+    }
+    else
+    {
+        // user existiert nicht
+    }
 }
 
-bool Directory::exists(std::string path) {
-	DIR *pDir;
-	bool bExists = false;
+bool Directory::adduserdirectory ( std::string user )
+{
+    if ( existspoolpathOtherwiseCreate() == 1 )
+    {
+        if ( existsuserdirOtherwiseCreate ( user ) == 1 )
+        {
+            return 1;
+        }
+        else
+        {
+            return 0; //fehler beim erstellen des userverzeichnisses
+        }
+    }
+    else
+    {
+        return 0; // fehler beim erstellen des poolverzeichnisses
+    }
+}
 
-	pDir = opendir(path.c_str());
+bool Directory::existspoolpathOtherwiseCreate()
+{
+    if ( exists ( pool_path ) == 0 )
+    {
+        return create ( pool_path );
+    }
+    else
+    {
+        return 1; //poolpath vorhanden
+    }
+}
+bool Directory::existsuserdirOtherwiseCreate ( std::string user )
+{
+    if ( existsuserdir ( user ) == 0 )
+    {
+        return create ( pool_path + "/" + user );
+    }
+    else
+    {
+        return 1; //userpath vorhanden
+    }
+}
+bool Directory::existsmaildirOtherwiseCreate ( std::string receiver,
+        std::string messagenumber )
+{
+    if ( existsmaildir ( receiver, messagenumber ) == 0 )
+    {
+        return create ( pool_path + "/" + receiver + "/" + messagenumber );
+    }
+    else
+    {
+        return 1; //usermailpath vorhanden
+    }
+}
+bool Directory::existsuserdir ( std::string user )
+{
+    if ( exists ( pool_path + "/" + user ) == 0 )
+    {
+        return 0;
+    }
+    else
+    {
+        return 1;
+    }
+}
+bool Directory::existsmaildir ( std::string receiver, std::string messagenumber )
+{
+    if ( exists ( pool_path + "/" + receiver + "/" + messagenumber ) == 0 )
+    {
+        return 0;
+    }
+    else
+    {
+        return 1;
+    }
+}
+std::string Directory::getfreemessagenumber ( std::string receiver )
+{
+    int i = 0;
+    while ( true )
+    {
+        std::ostringstream tmp;
+        tmp << i;
+        std::string val = tmp.str();
+        if ( exists ( pool_path + "/" + receiver + "/" + val ) == 0 )
+        {
+            return val;
+        }
+        i++;
+    }
+}
 
-	if (pDir != NULL) {
-		bExists = true;
-		(void) closedir(pDir);
-	}
+bool Directory::exists ( std::string path )
+{
+    DIR *pDir;
+    bool bExists = false;
 
-	return bExists;
+    pDir = opendir ( path.c_str() );
+
+    if ( pDir != NULL )
+    {
+        bExists = true;
+        ( void ) closedir ( pDir );
+    }
+
+    return bExists;
 
 }
-bool Directory::fileexists(std::string path) {
-	bool flag = false;
-	std::fstream fin;
-	fin.open(path.c_str());
-	if (fin.is_open()) {
-		std::cout << "file exists" << std::endl;
-		flag = true;
-	}
-	fin.close();
-	return flag;
+bool Directory::fileexists ( std::string path )
+{
+    bool flag = false;
+    std::fstream fin;
+    fin.open ( path.c_str() );
+    if ( fin.is_open() )
+    {
+        std::cout << "file exists" << std::endl;
+        flag = true;
+    }
+    fin.close();
+    return flag;
 }
-bool Directory::create(std::string path) {
-	if (mkdir(path.c_str(), 0777) != 0) {
-		return 0;
-	} else {
-		std::cout << "mkdir <" << path << ">" << std::endl;
-		return 1; //alles ok beim erstellen des ordners}
-	}
+bool Directory::create ( std::string path )
+{
+    if ( mkdir ( path.c_str(), 0777 ) != 0 )
+    {
+        return 0;
+    }
+    else
+    {
+        std::cout << "mkdir <" << path << ">" << std::endl;
+        return 1; //alles ok beim erstellen des ordners}
+    }
 }
