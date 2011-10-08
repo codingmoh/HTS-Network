@@ -59,8 +59,12 @@ private:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	bool create(std::string);
 >>>>>>> c17abc9de4c00f9423d6a809e1539161ba6353f7
+=======
+	void create(std::string);
+>>>>>>> parent of c17abc9... m
 =======
 	void create(std::string);
 >>>>>>> parent of c17abc9... m
