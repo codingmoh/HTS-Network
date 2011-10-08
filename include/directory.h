@@ -25,62 +25,24 @@
 
 class Directory {
 public:
-<<<<<<< HEAD
-  std::string pool_path;
-  Directory(std::string path);
-  Directory * adduserdirectory(std::string);
-  void savemessage(Mail&);
-<<<<<<< HEAD
-  Mail*_getmessages();
-=======
-  Message** getmessages();
-
-private:
-  bool exists(std::string);
-  bool existspoolpathOtherwiseCreate();
-  bool existsuserdirOtherwiseCreate(std::string);
-  void create(std::string);
->>>>>>> 1818878006b0a2a668f9baab888de7c475dc168d
-=======
 	std::string pool_path;
 	Directory(std::string path);
-	Directory * adduserdirectory(std::string);
-	void savemessage(Mail&);
+	bool adduserdirectory(std::string);
+	bool savemessage(Mail&);
 	Message** getmessages(std::string);
 	Message* getmessage(std::string, int);
+	bool removemessage(std::string, int);
 
 private:
 	bool exists(std::string);
+	bool fileexists(std::string);
 	bool existspoolpathOtherwiseCreate();
+	bool existsuserdir(std::string);
 	bool existsuserdirOtherwiseCreate(std::string);
+	bool existsmaildir(std::string, std::string);
 	bool existsmaildirOtherwiseCreate(std::string, std::string);
 	std::string getfreemessagenumber(std::string);
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 	bool create(std::string);
->>>>>>> c17abc9de4c00f9423d6a809e1539161ba6353f7
-=======
-	void create(std::string);
->>>>>>> parent of c17abc9... m
-=======
-	void create(std::string);
->>>>>>> parent of c17abc9... m
-=======
-	void create(std::string);
->>>>>>> parent of c17abc9... m
-=======
-	void create(std::string);
->>>>>>> parent of c17abc9... m
-=======
-	void create(std::string);
->>>>>>> parent of c17abc9... m
-=======
-	void create(std::string);
->>>>>>> parent of c17abc9... m
 };
 
 #endif // DIRECTORY_H
