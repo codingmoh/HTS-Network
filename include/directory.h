@@ -44,23 +44,23 @@ private:
 =======
 	std::string pool_path;
 	Directory(std::string path);
-	bool adduserdirectory(std::string);
-	bool savemessage(Mail&);
+	Directory * adduserdirectory(std::string);
+	void savemessage(Mail&);
 	Message** getmessages(std::string);
 	Message* getmessage(std::string, int);
-	bool removemessage(std::string, int);
 
 private:
 	bool exists(std::string);
-	bool fileexists(std::string);
 	bool existspoolpathOtherwiseCreate();
-	bool existsuserdir(std::string);
 	bool existsuserdirOtherwiseCreate(std::string);
-	bool existsmaildir(std::string, std::string);
 	bool existsmaildirOtherwiseCreate(std::string, std::string);
 	std::string getfreemessagenumber(std::string);
+<<<<<<< HEAD
 	bool create(std::string);
 >>>>>>> c17abc9de4c00f9423d6a809e1539161ba6353f7
+=======
+	void create(std::string);
+>>>>>>> parent of c17abc9... m
 };
 
 #endif // DIRECTORY_H
