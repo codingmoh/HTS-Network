@@ -3,5 +3,5 @@ class ListMessageElement
 {
 public:
   ListMessageElement();
-  ListMessageElement(std::string);
+  ListMessageElement(std::string, int);
 };

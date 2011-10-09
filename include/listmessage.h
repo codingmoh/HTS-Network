@@ -25,7 +25,7 @@
 class Listmessage:public Message
 {
 private:
-  //std::vector<>
+  std::vector<std::pair<std::string, int> > listelement;
 public:
    Listmessage():Message(Message::mList)
    {
