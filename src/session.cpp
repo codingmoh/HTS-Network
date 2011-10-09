@@ -39,7 +39,7 @@ bool Session::executecommand(Message * message)
 {
  if(message->getmessagetype()==Message::mMail)
  {
-   
+   this->userdir.savemessage(*dynamic_cast<Mail*>(message));
  }
 }
 Session::~Session()
