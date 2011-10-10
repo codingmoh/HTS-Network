@@ -68,8 +68,9 @@ int main(int argc, char **argv)
 	    
             std::cout <<"Message: (The delim char is '.')";
             char message[256];
+	    std::string mmm;
             std::cin.getline(message, 256, '.');
-	    
+	    std::cin.ignore();
             Message * m = new Mail(to, from, subject, message);
 	    
             client.sendmessage(m);
