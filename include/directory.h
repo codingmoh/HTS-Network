@@ -32,10 +32,10 @@ public:
    std::string pool_path_;
    Directory(std::string path);
    bool adduserdirectory(std::string);
-   bool savemessage(Mail&);
+   void savemessage(Mail&);
    Listmessage getmessages(Listmessage&);
    Mail getmessage(std::string, int);
-   bool removemessage(std::string, int);
+   void removemessage(std::string, int);
 
 private:
    bool exists(std::string);
