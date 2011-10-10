@@ -2,6 +2,7 @@
 #include <sstream>
 #include "mail.h"
 #include "client.h"
+#include <deletemessage.h>
 #include <listmessage.h>
 #include <signal.h>
 static void getrestrictedlength(std::string name, std::string& input, int size)
@@ -74,6 +75,18 @@ int main(int argc, char **argv)
 	 {
 	   client.closeconnection();
 	 }
+	 else if(command == "DEL")
+	 {
+	   int nr;
+	   std::string name;
+	   std::cout<<"Username:"<<std::endl;
+	   std::cin>>name;
+	   std::cout<<"NR:"<<std::endl;
+	   std::cin>>nr;
+	   Deletemessage dm(nr, name);
+	   Message * mes = &dm;
+	   client.sendmessage(mes);
+	}
       }
 
       /*

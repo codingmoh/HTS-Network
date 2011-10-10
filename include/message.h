@@ -11,7 +11,9 @@ class Message
       mMail,
       mList,
       mStandard,
-      mException
+      mException,
+      mRead,
+      mDelete
     };
     
   public:
