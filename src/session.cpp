@@ -68,6 +68,7 @@ void Session::executecommand(Message *& message)
          standard_messages sm(standard_messages::OK);
          Message * mes = &sm;
          Serializer::sendmessage(this->socketid_, mes);
+	 this->startrecieveing();
       }
    }
    catch (MessageException &e)

@@ -38,8 +38,8 @@ void Server::waitforincome()
   Session *  session = new Session(new_socket,this->rootdirectory_);
  // sessions.push_back(session);
   session->start();
-  close(this->socket_descriptor_);
-  //this->waitforincome();
+  //close(this->socket_descriptor_);
+  this->waitforincome();
 }
 
 
