@@ -10,7 +10,8 @@ class Message
     {
       mMail,
       mList,
-      mStandard
+      mStandard,
+      mException
     };
     
   public:

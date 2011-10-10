@@ -7,6 +7,7 @@
 #include "directory.h"
 #include "serializer.h"
 #include "listmessage.h"
+#include "messageexception.h"
 #ifndef SESSION_H
 #define SESSION_H
 

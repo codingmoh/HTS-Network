@@ -23,6 +23,7 @@
 #define DIRECTORY_H
 #include "mail.h"
 #include "listmessage.h"
+#include "messageexception.h"
 
 class Directory
 {
