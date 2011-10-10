@@ -2,6 +2,7 @@
 #include "client.h"
 #include <listmessage.h>
 #include <standard_messages.h>
+#include <messageexception.h>
 
 Client::Client(NetworkAddressType addr_esstype, 
 	       NetworkProtocolType protocoltype, 
@@ -53,5 +54,20 @@ void Client::executecommand(Message*& message)
     std::cout << m->receiver_ << std::endl;
     std::cout << m->subject_ << std::endl;
     std::cout << m->msg_ << std::endl;
+  }
+  else if(message->getmessagetype()==Message::mStandard)
+  {
+    if(dynamic_cast<standard_messages*>(message)->type_ == standard_messages::OK)
+    {
+      std::cout<<"OK"<<std::endl;
+    }
+    else if(dynamic_cast<standard_messages*>(message)->type_ == standard_messages::ERR)
+    {
+      std::cout<<"ERR"<<std::endl;
+    }
+  }
+  else if(message->getmessagetype()==Message::mException)
+  {
+    std::cout<<"ERR"<<std::endl;
   }
 }

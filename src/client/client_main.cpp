@@ -10,18 +10,18 @@
 
 static void getrestrictedlength(std::string name, std::string& input, int size)
 {
-   
-   while (input.size() > size || input.size() < 1)
-   {
      
      std::cout<<name<<std::endl;
      std::getline(std::cin,input);
-     std::cout<<input;
+     if( input.size() > size || input.size() < 1)
+     {
+       input = "";
+       getrestrictedlength(name,input,size);
+     }
 //       if(input.size() < size && input.size()>1)
 //       {
 // 	break;
 //       }
-   }
 }
 
 int main(int argc, char **argv)
@@ -66,11 +66,12 @@ int main(int argc, char **argv)
             std::cout <<"Message: (The delim char is '.')";
             char message[256];
             std::cin.getline(message, 256, '.');
-
+	    
+	    std::cout<<from<<to<<subject<<message<<std::endl;
             Message * m = new Mail(to, from, subject, message);
-
+	    
             client.sendmessage(m);
-
+	    client.waitresponse();
             delete m;
          }
 
@@ -100,6 +101,7 @@ int main(int argc, char **argv)
             Deletemessage dm(nr, name);
             Message * mes = &dm;
             client.sendmessage(mes);
+	    client.waitresponse();
          }
 
          else if (command == "READ")
