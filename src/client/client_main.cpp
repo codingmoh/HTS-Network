@@ -3,7 +3,7 @@
 #include "mail.h"
 #include "client.h"
 #include <listmessage.h>
-
+#include <signal.h>
 static void getrestrictedlength(std::string name, std::string& input, int size)
 {
    while (input.size() > size || input.size() < 1)
@@ -25,16 +25,18 @@ int main(int argc, char **argv)
       if (client.connect_to_target(std::string(argv[1])))
       {
          std::cout << "Successfully connected" << std::endl;
+	 signal(SIGINT, SIG_IGN); 
       }
-
       else
       {
          std::cout << "Connection ERROR" << std::endl;
          exit(1);
       }
-
+      /*void func(int);
+      
+      signal(SIGKILL,func);*/
+      
       std::string command;
-
       while (command != "EXIT")
       {
          //command = "SEND";
@@ -68,6 +70,10 @@ int main(int argc, char **argv)
             client.waitresponse();
             delete mes;            
          }
+         else if (command == "EXIT")
+	 {
+	   client.closeconnection();
+	 }
       }
 
       /*

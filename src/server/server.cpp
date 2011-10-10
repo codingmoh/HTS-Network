@@ -36,9 +36,10 @@ void Server::waitforincome()
   while((new_socket = accept(this->socket_descriptor_,(struct sockaddr *) &client_addr, &addrlen))< 1);
   std::cout<<"client connected"<<std::endl;
   Session *  session = new Session(new_socket,this->rootdirectory_);
-  sessions.push_back(session);
+ // sessions.push_back(session);
   session->start();
-  this->waitforincome();
+  close(this->socket_descriptor_);
+  //this->waitforincome();
 }
 
 

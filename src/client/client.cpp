@@ -1,6 +1,7 @@
 #include <string.h>
 #include "client.h"
 #include <listmessage.h>
+#include <standard_messages.h>
 
 Client::Client(NetworkAddressType addr_esstype, 
 	       NetworkProtocolType protocoltype, 
@@ -28,7 +29,13 @@ void Client::waitresponse()
 {
   Serializer::receivemessage(this->socket_descriptor_, 2048);
 }
-
+void Client::closeconnection()
+{
+  
+  Message * message = new standard_messages (standard_messages::EXIT);
+  sendmessage(message);
+  close(this->socket_descriptor_);
+}
 void Client::executecommand(Message*& message)
 {
   

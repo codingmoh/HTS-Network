@@ -28,6 +28,7 @@ public:
   void sendmessage(Message*&);
   void waitresponse();
   void executecommand(Message*&);
+  void closeconnection();
 };
 
 #endif // CLIENT_H

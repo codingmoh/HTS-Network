@@ -9,7 +9,8 @@ class Message
     enum Messagetype
     {
       mMail,
-      mList
+      mList,
+      mStandard
     };
     
   public:
