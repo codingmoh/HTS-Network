@@ -24,7 +24,7 @@ public:
    {
    }
 
-   Deletemessage(): Message(Message::mMail)
+   Deletemessage(): Message(Message::mDelete)
    {
 
    }

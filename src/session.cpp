@@ -10,8 +10,9 @@ Session::Session(int socketid, Directory& userdir) :
 
 void Session::start()
 {
-   boost::thread sessionthread(&Session::startrecieveing, this);
-   sessionthread.join();
+   /*boost::thread sessionthread(&Session::startrecieveing, this);
+   sessionthread.join();*/
+   startrecieveing();
 }
 
 void Session::startrecieveing()
@@ -35,6 +36,7 @@ void Session::executecommand(Message *& message)
       else if (message->getmessagetype() == Message::mList)
       {
          Listmessage * lm = dynamic_cast<Listmessage*>(message);
+	 std::cout<<"USSSSSEEEEEEEEEEEEEEER"<<std::endl;
          std::cout << lm->GetUserName() << std::endl;
          this->userdir_.getmessages(*lm);
          Message * msg = lm;
