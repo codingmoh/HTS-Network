@@ -1,7 +1,7 @@
 #include <session.h>
 
 
-Session::Session(int socketid, Directory& userdir):userdir(userdir), socketid(socketid)
+Session::Session(int socketid, Directory& userdir):userdir_(userdir), socketid_(socketid)
 {
   
 }
@@ -14,32 +14,33 @@ void Session::start()
 
 void Session::startrecieveing()
 {
-  
-  if( this->executecommand(Serializer::receivemessage(this->socketid, 2048)))
+  Serializer::receivemessage(this->socketid_, 2048);
+   //executecommand();
+  /*if()
   {
     //SEND OK
   }
   else
   {
     //SEND ERR
-  }
+  }*/
 }
 
-bool Session::executecommand(Message * message)
+void Session::executecommand(Message *& message)
 {
  if(message->getmessagetype()==Message::mMail)
  {
-   this->userdir.savemessage(*dynamic_cast<Mail*>(message));
+   this->userdir_.savemessage(*dynamic_cast<Mail*>(message));
  }
  else if(message->getmessagetype()==Message::mList)
  {
    std::cout<<"gothere"<<std::endl;
    Listmessage * lm = dynamic_cast<Listmessage*>(message);
    std::cout<<lm->GetUserName()<<std::endl;
-   this->userdir.getmessages(*lm);
+   this->userdir_.getmessages(*lm);
    Message * msg = lm;
-   std::cout<<lm->GetElements()[0]._subject<<std::endl;
-   Serializer::sendmessage(this->socketid, msg );// ^^ ...OOP FTW xD
+   std::cout<<lm->GetElements()[0].subject_<<std::endl;
+   Serializer::sendmessage(this->socketid_, msg );// ^^ ...OOP FTW xD
  }
  this->startrecieveing();
 }

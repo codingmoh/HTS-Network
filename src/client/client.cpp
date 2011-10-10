@@ -2,19 +2,19 @@
 #include "client.h"
 #include <listmessage.h>
 
-Client::Client(NetworkAddressType addresstype, 
+Client::Client(NetworkAddressType addr_esstype, 
 	       NetworkProtocolType protocoltype, 
 	       int port, std::string username):
-	       Networkbase(addresstype, protocoltype, port), username(username)
+	       Networkbase(addr_esstype, protocoltype, port)
 {
  
 }
 
 bool Client::connect_to_target(std::string ip)
 {
-  sockaddr_in addr;
-  inet_aton (ip.c_str(), &this->addr.sin_addr);
- if(connect(this->socket_descriptor, (sockaddr *) &this->addr, sizeof(this->addr)) == 0)
+  sockaddr_in addr_;
+  inet_aton (ip.c_str(), &this->addr_.sin_addr);
+ if(connect(this->socket_descriptor_, (sockaddr *) &this->addr_, sizeof(this->addr_)) == 0)
    return true;
  else
    return false;
@@ -22,24 +22,24 @@ bool Client::connect_to_target(std::string ip)
 
 void Client::sendmessage(Message *& message)
 {
-   Serializer::sendmessage(this->socket_descriptor, message);
+   Serializer::sendmessage(this->socket_descriptor_, message);
 }
 void Client::waitresponse()
 {
-  Message * message = Serializer::receivemessage(this->socket_descriptor, 2048);
+  Message * message = Serializer::receivemessage(this->socket_descriptor_, 2048);
   this->executecommand(message);
 }
 
 void Client::executecommand(Message*& message)
 {
-  std::cout<<"got back"<<std::endl;
+  
   std::cout<<message->getmessagetype()<<std::endl;
   if(message->getmessagetype()==Message::mList)
   {
     std::vector<ListMessageElement> elem = dynamic_cast<Listmessage*>(message)->GetElements();
     for(int i = 0; i< elem.size(); i++)
     {
-      std::cout<<elem[i]._number<<":"<<elem[i]._subject<<std::endl;
+      std::cout<<elem[i].number_<<":"<<elem[i].subject_<<std::endl;
     }
   }
 }

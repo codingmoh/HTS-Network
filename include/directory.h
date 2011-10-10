@@ -28,7 +28,7 @@ class Directory
 {
 
 public:
-   std::string pool_path;
+   std::string pool_path_;
    Directory(std::string path);
    bool adduserdirectory(std::string);
    bool savemessage(Mail&);

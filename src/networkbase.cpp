@@ -22,11 +22,11 @@
 Networkbase::Networkbase(Networkbase::NetworkAddressType  addresstype, 
 			 Networkbase::NetworkProtocolType protocol, int port)
 {
-  this->socket_descriptor = socket(addresstype, protocol, 0); 
-  if(socket_descriptor == -1)
+  this->socket_descriptor_ = socket(addresstype, protocol, 0); 
+  if(socket_descriptor_ == -1)
     throw std::string("exception");
-  addr.sin_family = addresstype;
-  addr.sin_port = port;
-  addr.sin_addr.s_addr = htonl(INADDR_ANY);
+  addr_.sin_family = addresstype;
+  addr_.sin_port = port;
+  addr_.sin_addr.s_addr = htonl(INADDR_ANY);
 }
 

@@ -10,12 +10,12 @@ class ListMessageElement
   template<class Archive>
   void serialize(Archive & ar, const unsigned int version)
   {
-      ar & _subject;
-      ar & _number;
+      ar & subject_;
+      ar & number_;
    }
 public:
-  std::string _subject;
-  int _number;
+  std::string subject_;
+  int number_;
 public:
   ListMessageElement(){}
   ListMessageElement(std::string, int);

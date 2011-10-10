@@ -13,11 +13,11 @@
 class Session: public Serializer
 {
 private:
-  int socketid;
+  int socketid_;
   void startrecieveing();
   //Message * deserializemessage(char* msg);
-  bool executecommand(Message * message);
-  Directory &userdir;
+  void executecommand(Message *& message);
+  Directory &userdir_;
 public:
   Session(int socketid,Directory &);
   void start();

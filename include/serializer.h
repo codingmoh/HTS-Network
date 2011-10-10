@@ -32,11 +32,12 @@
 class Serializer
 {
 private: 
-  const char* serializemessage(Message *& message);
-  Message * deserializemessage(char* msg);
+  const char* serializemessage(Message *& );
+  Message * deserializemessage(char*);
 protected:
   void sendmessage(int, Message *&);
-  Message * receivemessage(int,int); 
+  Message * receivemessage(int,int);
+  virtual void executecommand(Message *&)=0;
 };
 
 #endif // SERIALIZER_H

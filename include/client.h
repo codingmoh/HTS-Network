@@ -19,7 +19,7 @@
 class Client : public Networkbase, public Serializer
 {
 private:
-  std::string username;
+  std::string username_;
   //const char * serializemessage(Message *& message);
 public:
   Client(NetworkAddressType, NetworkProtocolType, int, std::string);

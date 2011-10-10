@@ -15,13 +15,13 @@ class Message
   public:
     Message(Message::Messagetype type)
     {
-      this->_msg_type = type;
+      this->msg_type_ = type;
     };
     Message(){};
     
     Messagetype getmessagetype()
     {
-      return _msg_type;
+      return msg_type_;
     };
     virtual ~Message()
     {
@@ -29,12 +29,12 @@ class Message
     };
     
   private:  
-      Messagetype _msg_type;
+      Messagetype msg_type_;
       friend class boost::serialization::access;   
       template<class Archive>
       void serialize(Archive & ar, const unsigned int version)
       {
-	ar & _msg_type;
+	ar & msg_type_;
       }
 };
 #endif

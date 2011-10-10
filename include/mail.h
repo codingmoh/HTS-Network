@@ -9,23 +9,23 @@ class Mail: public Message
    void serialize(Archive & ar, const unsigned int version)
    {
       boost::serialization::base_object<Message>(*this);
-      ar & _msg;
-      ar & _receiver;
-      ar & _sender;
-      ar & _subject;
-      ar & _number;
+      ar & msg_;
+      ar & receiver_;
+      ar & sender_;
+      ar & subject_;
+      ar & number_;
    }
 
    
 
 public:
-   std::string _receiver;
-   std::string _sender;
-   std::string _subject;
-   std::string _msg;
-   int _number;
+   std::string receiver_;
+   std::string sender_;
+   std::string subject_;
+   std::string msg_;
+   int number_;
    Mail(std::string rec, std::string send, std::string sub, std::string msg) :
-         Message(Message::mMail), _receiver(rec), _sender(send), _subject(sub), _msg(msg)
+         Message(Message::mMail), receiver_(rec), sender_(send), subject_(sub), msg_(msg)
    {
       /*this->_receiver = rec;
       this->_sender = send;

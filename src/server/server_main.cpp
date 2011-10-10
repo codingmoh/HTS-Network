@@ -9,7 +9,6 @@ int main(int argc, char** argv)
       Server server(Server::IPv4, Server::TCP, atoi(argv[1]), rootdir);
       std::cout << "Server started, waiting for incoming clients" << std::endl;
       server.waitforincome();
-      std::cout << server._sout;
       return 0;
    }
    else

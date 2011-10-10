@@ -22,21 +22,21 @@
 
 void Listmessage::AddElement(ListMessageElement& element)
 {
-  this->_elements.push_back(element);
+  this->elements_.push_back(element);
 }
 
 void Listmessage::AddElement(Mail mail)
 {
-  ListMessageElement el(mail._subject, mail._number);
-  this->_elements.push_back(el);
+  ListMessageElement el(mail.subject_, mail.number_);
+  this->elements_.push_back(el);
 }
 
 std::string Listmessage::GetUserName()
 {
-  return this->_username;
+  return this->username_;
 }
 
 std::vector<ListMessageElement>  Listmessage::GetElements()
 {
- return this->_elements; 
+ return this->elements_; 
 }

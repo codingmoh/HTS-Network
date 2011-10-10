@@ -31,21 +31,21 @@
 
 Directory::Directory(std::string path)
 {
-   pool_path = path;
+   pool_path_ = path;
    existspoolpathOtherwiseCreate();
 }
 
 bool Directory::savemessage(Mail& msg)
 {
-   if (adduserdirectory(msg._receiver) == 1)
+   if (adduserdirectory(msg.receiver_) == 1)
    {
 
-      std::string messagenumber = getfreemessagenumber(msg._receiver);
+      std::string messagenumber = getfreemessagenumber(msg.receiver_);
 
-      if (existsmaildirOtherwiseCreate(msg._receiver, messagenumber))
+      if (existsmaildirOtherwiseCreate(msg.receiver_, messagenumber))
       {
 
-         std::string file = pool_path + "/" + msg._receiver + "/"
+         std::string file = pool_path_ + "/" + msg.receiver_ + "/"
                             + messagenumber + "/message.txt";
 
          std::ofstream myfile(file.c_str());
@@ -92,7 +92,7 @@ bool Directory::removemessage(std::string from, int number)
       if (existsmaildir(from, messagenumber) == 1)
       {
 
-         std::string file = pool_path + "/" + from + "/" + messagenumber;
+         std::string file = pool_path_ + "/" + from + "/" + messagenumber;
          std::string command = "rm -r " + file;
 
          if (system(command.c_str()) == 0)
@@ -137,7 +137,7 @@ Mail Directory::getmessage(std::string from, int number)
       if (existsmaildir(from, messagenumber) == 1)
       {
 
-         std::string file = pool_path + "/" + from + "/" + messagenumber
+         std::string file = pool_path_ + "/" + from + "/" + messagenumber
                             + "/message.txt";
 
          if (fileexists(file) == 1)
@@ -148,7 +148,7 @@ Mail Directory::getmessage(std::string from, int number)
             boost::archive::text_iarchive ia(myfile);
             ia >> msg;
             myfile.close();
-	    msg._number = number;
+	    msg.number_ = number;
             return msg;
          }
 
@@ -174,7 +174,7 @@ Listmessage Directory::getmessages(Listmessage & lm)
    if (existsuserdir(from) == 1)
    {
       std::vector<int> files = std::vector<int>();
-      std::string userpath = pool_path + "/" + from;
+      std::string userpath = pool_path_ + "/" + from;
       getdir(userpath, files);
       sort(files.begin(), files.end());
 
@@ -216,9 +216,9 @@ bool Directory::adduserdirectory(std::string user)
 
 bool Directory::existspoolpathOtherwiseCreate()
 {
-   if (exists(pool_path) == 0)
+   if (exists(pool_path_) == 0)
    {
-      return create(pool_path);
+      return create(pool_path_);
    }
 
    else
@@ -231,7 +231,7 @@ bool Directory::existsuserdirOtherwiseCreate(std::string user)
 {
    if (existsuserdir(user) == 0)
    {
-      return create(pool_path + "/" + user);
+      return create(pool_path_ + "/" + user);
    }
 
    else
@@ -245,7 +245,7 @@ bool Directory::existsmaildirOtherwiseCreate(std::string receiver,
 {
    if (existsmaildir(receiver, messagenumber) == 0)
    {
-      return create(pool_path + "/" + receiver + "/" + messagenumber);
+      return create(pool_path_ + "/" + receiver + "/" + messagenumber);
    }
 
    else
@@ -256,7 +256,7 @@ bool Directory::existsmaildirOtherwiseCreate(std::string receiver,
 
 bool Directory::existsuserdir(std::string user)
 {
-   if (exists(pool_path + "/" + user) == 0)
+   if (exists(pool_path_ + "/" + user) == 0)
    {
       return 0;
    }
@@ -269,7 +269,7 @@ bool Directory::existsuserdir(std::string user)
 
 bool Directory::existsmaildir(std::string receiver, std::string messagenumber)
 {
-   if (exists(pool_path + "/" + receiver + "/" + messagenumber) == 0)
+   if (exists(pool_path_ + "/" + receiver + "/" + messagenumber) == 0)
    {
       return 0;
    }
@@ -290,7 +290,7 @@ std::string Directory::getfreemessagenumber(std::string receiver)
       tmp << i;
       std::string val = tmp.str();
 
-      if (exists(pool_path + "/" + receiver + "/" + val) == 0)
+      if (exists(pool_path_ + "/" + receiver + "/" + val) == 0)
       {
          return val;
       }

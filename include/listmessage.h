@@ -34,13 +34,13 @@ class Listmessage: public Message
    {
       
       boost::serialization::base_object<Message>(*this);
-      ar & _elements;
-      ar & _username;
+      ar & elements_;
+      ar & username_;
    }
-  std::string _username;
+  std::string username_;
+  std::vector<ListMessageElement> elements_;
 public:
-   std::vector<ListMessageElement> _elements;
-   Listmessage(std::string user):Message(Message::mList), _username(user)
+   Listmessage(std::string user):Message(Message::mList), username_(user)
    {
   
    }

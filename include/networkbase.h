@@ -45,8 +45,8 @@ public:
 
 Networkbase(NetworkAddressType, NetworkProtocolType, int);
 protected:
-    sockaddr_in addr;
-    int socket_descriptor;
+    sockaddr_in addr_;
+    int socket_descriptor_;
 };
 
 #endif // NETWORKBASE_H

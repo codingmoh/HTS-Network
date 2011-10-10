@@ -28,13 +28,11 @@
 
 class Server:public Networkbase
 {
-public:
-  std::stringstream _sout;
 private:
   std::vector<Session*> sessions;
   std::vector<sockaddr_in> _clientadresses;
   std::map<int, Directory*> user_directories;
-  Directory& rootdirectory;
+  Directory& rootdirectory_;
   
 public:
   Server(NetworkAddressType, NetworkProtocolType,int, Directory &);
