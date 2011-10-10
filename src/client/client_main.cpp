@@ -6,18 +6,25 @@
 #include <deletemessage.h>
 #include <listmessage.h>
 #include <signal.h>
-static void
-getrestrictedlength(std::string name, std::string& input, int size)
+#include <stdio.h>
+
+static void getrestrictedlength(std::string name, std::string& input, int size)
 {
+   
    while (input.size() > size || input.size() < 1)
    {
-      std::cout << name;
-      std::getline(std::cin, input);
+     
+     std::cout<<name<<std::endl;
+     std::getline(std::cin,input);
+     std::cout<<input;
+//       if(input.size() < size && input.size()>1)
+//       {
+// 	break;
+//       }
    }
 }
 
-int
-main(int argc, char **argv)
+int main(int argc, char **argv)
 {
    if (argc == 3)
    {
@@ -49,15 +56,14 @@ main(int argc, char **argv)
          //command = "SEND";
          std::cout << "Enter Command:" << std::endl;
          std::cin >> command;
-
          if (command == "SEND")
          {
             std::string from, to, subject;
             getrestrictedlength("From:", from, 8);
             getrestrictedlength("To:", to, 8);
-            getrestrictedlength("Subject:", subject, 8);
-
-            std::cout << std::endl << "Message: (The delim char is '.')";
+            getrestrictedlength("Subject:", subject, 80);
+	    
+            std::cout <<"Message: (The delim char is '.')";
             char message[256];
             std::cin.getline(message, 256, '.');
 
@@ -68,49 +74,45 @@ main(int argc, char **argv)
             delete m;
          }
 
-         else
-            if (command == "LIST")
-            {
-               std::string user;
-               getrestrictedlength("Username:", user, 8);
-               Message * mes = new Listmessage(user);
-               client.sendmessage(mes);
-               client.waitresponse();
-               delete mes;
-            }
+         else if (command == "LIST")
+         {
+            std::string user;
+            getrestrictedlength("Username:", user, 8);
+            Message * mes = new Listmessage(user);
+            client.sendmessage(mes);
+            client.waitresponse();
+            delete mes;
+         }
 
-            else
-               if (command == "EXIT")
-               {
-                  client.closeconnection();
-               }
+         else if (command == "EXIT")
+         {
+            client.closeconnection();
+         }
 
-               else
-                  if (command == "DEL")
-                  {
-                     int nr;
-                     std::string name;
-                     std::cout << "Username:" << std::endl;
-                     std::cin >> name;
-                     std::cout << "NR:" << std::endl;
-                     std::cin >> nr;
-                     Deletemessage dm(nr, name);
-                     Message * mes = &dm;
-                     client.sendmessage(mes);
-                  }
+         else if (command == "DEL")
+         {
+            int nr;
+            std::string name;
+            std::cout << "Username:" << std::endl;
+            std::cin >> name;
+            std::cout << "NR:" << std::endl;
+            std::cin >> nr;
+            Deletemessage dm(nr, name);
+            Message * mes = &dm;
+            client.sendmessage(mes);
+         }
 
-                  else
-                     if (command == "READ")
-                     {
-                        std::string user;
-                        std::string number;
-                        getrestrictedlength("Username:", user, 8);
-                        std::cout << "Messagenumber: ";
-                        std::getline(std::cin, number);
-                        Message * mes = new Read(user, atoi(number.c_str()));
-                        client.sendmessage(mes);
-                        client.waitresponse();
-                     }
+         else if (command == "READ")
+         {
+            std::string user;
+            std::string number;
+            getrestrictedlength("Username:", user, 8);
+            std::cout << "Messagenumber: ";
+            std::getline(std::cin, number);
+            Message * mes = new Read(user, atoi(number.c_str()));
+            client.sendmessage(mes);
+            client.waitresponse();
+         }
       }
 
 

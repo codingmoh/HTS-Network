@@ -31,15 +31,12 @@ void Client::waitresponse()
 }
 void Client::closeconnection()
 {
-  
   Message * message = new standard_messages (standard_messages::EXIT);
   sendmessage(message);
   close(this->socket_descriptor_);
 }
 void Client::executecommand(Message*& message)
 {
-  
-  std::cout<<message->getmessagetype()<<std::endl;
   if(message->getmessagetype()==Message::mList)
   {
     std::vector<ListMessageElement> elem = dynamic_cast<Listmessage*>(message)->GetElements();
@@ -47,7 +44,9 @@ void Client::executecommand(Message*& message)
     {
       std::cout<<elem[i].number_<<":"<<elem[i].subject_<<std::endl;
     }
-  }else if(message->getmessagetype()==Message::mMail){
+  }
+  else if(message->getmessagetype()==Message::mMail)
+  {
     Mail* m = dynamic_cast<Mail*>(message);
     std::cout << "OK" << std::endl;
     std::cout << m->sender_ << std::endl;
