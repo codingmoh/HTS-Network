@@ -16,21 +16,43 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 */
-
 #include "message.h"
+#include "listmessageelement.h"
+#include "mail.h"
+#include <boost/serialization/vector.hpp>
 #include <vector>
+
 #ifndef LISTMESSAGE_H
 #define LISTMESSAGE_H
 
-class Listmessage:public Message
+
+class Listmessage: public Message
 {
-private:
-  std::vector<std::pair<std::string, int> > listelement;
+   friend class boost::serialization::access;
+   template<class Archive>
+   void serialize(Archive & ar, const unsigned int version)
+   {
+      
+      boost::serialization::base_object<Message>(*this);
+      ar & _elements;
+      ar & _username;
+   }
+  std::string _username;
 public:
+   std::vector<ListMessageElement> _elements;
+   Listmessage(std::string user):Message(Message::mList), _username(user)
+   {
+  
+   }
    Listmessage():Message(Message::mList)
    {
      
    }
+   
+   void AddElement(ListMessageElement&);
+   void AddElement(Mail);
+   std::vector<ListMessageElement> GetElements();
+   std::string GetUserName();
 };
-
+BOOST_CLASS_EXPORT(Listmessage);
 #endif // LISTMESSAGE_H

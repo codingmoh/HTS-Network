@@ -22,29 +22,31 @@
 #ifndef DIRECTORY_H
 #define DIRECTORY_H
 #include "mail.h"
+#include "listmessage.h"
 
 class Directory
 {
+
 public:
-	std::string pool_path;
-	Directory(std::string path);
-	bool adduserdirectory(std::string);
-	bool savemessage(Mail&);
-	Mail** getmessages(std::string);
-	Mail* getmessage(std::string, int);
-	bool removemessage(std::string, int);
+   std::string pool_path;
+   Directory(std::string path);
+   bool adduserdirectory(std::string);
+   bool savemessage(Mail&);
+   Listmessage getmessages(Listmessage&);
+   Mail getmessage(std::string, int);
+   bool removemessage(std::string, int);
 
 private:
-	bool exists(std::string);
-	bool fileexists(std::string);
-	bool existspoolpathOtherwiseCreate();
-	bool existsuserdir(std::string);
-	bool existsuserdirOtherwiseCreate(std::string);
-	bool existsmaildir(std::string, std::string);
-	bool existsmaildirOtherwiseCreate(std::string, std::string);
-	std::string getfreemessagenumber(std::string);
-	bool create(std::string);
-	int getdir(std::string, std::vector<int> &);
+   bool exists(std::string);
+   bool fileexists(std::string);
+   bool existspoolpathOtherwiseCreate();
+   bool existsuserdir(std::string);
+   bool existsuserdirOtherwiseCreate(std::string);
+   bool existsmaildir(std::string, std::string);
+   bool existsmaildirOtherwiseCreate(std::string, std::string);
+   std::string getfreemessagenumber(std::string);
+   bool create(std::string);
+   int getdir(std::string, std::vector<int> &);
 };
 
 #endif // DIRECTORY_H

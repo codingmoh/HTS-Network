@@ -27,10 +27,10 @@ public:
    Mail(std::string rec, std::string send, std::string sub, std::string msg) :
          Message(Message::mMail), _receiver(rec), _sender(send), _subject(sub), _msg(msg)
    {
-      this->_receiver = rec;
+      /*this->_receiver = rec;
       this->_sender = send;
       this->_subject = sub;
-      this->_msg = msg;
+      this->_msg = msg;*/
    }
 
    Mail(): Message(Message::mMail)

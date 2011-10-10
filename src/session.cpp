@@ -14,10 +14,8 @@ void Session::start()
 
 void Session::startrecieveing()
 {
-  char buf[2048];
-  recv(this->socketid, &buf, 2047, 0);
-  this->deserializemessage(buf);
-  if( this->executecommand(this->deserializemessage(buf)))
+  
+  if( this->executecommand(Serializer::receivemessage(this->socketid, 2048)))
   {
     //SEND OK
   }
@@ -26,14 +24,6 @@ void Session::startrecieveing()
     //SEND ERR
   }
 }
-Message * Session::deserializemessage(char* msg)
-{
-  Message * mesg;
-  std::stringstream ss(msg);
-  boost::archive::text_iarchive ia(ss);
-  ia >> mesg;
-  return mesg;
-}
 
 bool Session::executecommand(Message * message)
 {
@@ -41,6 +31,17 @@ bool Session::executecommand(Message * message)
  {
    this->userdir.savemessage(*dynamic_cast<Mail*>(message));
  }
+ else if(message->getmessagetype()==Message::mList)
+ {
+   std::cout<<"gothere"<<std::endl;
+   Listmessage * lm = dynamic_cast<Listmessage*>(message);
+   std::cout<<lm->GetUserName()<<std::endl;
+   this->userdir.getmessages(*lm);
+   Message * msg = lm;
+   std::cout<<lm->GetElements()[0]._subject<<std::endl;
+   Serializer::sendmessage(this->socketid, msg );// ^^ ...OOP FTW xD
+ }
+ this->startrecieveing();
 }
 Session::~Session()
 {

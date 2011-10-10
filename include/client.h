@@ -6,23 +6,28 @@
 #include <sstream>
 #include <boost/archive/text_oarchive.hpp>
 #include <boost/archive/text_iarchive.hpp>
+#include "serializer.h"
 #include "networkbase.h"
 #include "mail.h"
+
 
 #ifndef CLIENT_H
 #define CLIENT_H
 
 
-class Client : public Networkbase
+
+class Client : public Networkbase, public Serializer
 {
 private:
   std::string username;
-  const char * serializemessage(Message *& message);
+  //const char * serializemessage(Message *& message);
 public:
   Client(NetworkAddressType, NetworkProtocolType, int, std::string);
   bool connect_to_target(std::string);
   std::string getusername();	
   void sendmessage(Message*&);
+  void waitresponse();
+  void executecommand(Message*&);
 };
 
 #endif // CLIENT_H

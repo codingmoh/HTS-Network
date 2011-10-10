@@ -2,15 +2,15 @@
 #include <sstream>
 #include "mail.h"
 #include "client.h"
+#include <listmessage.h>
 
 static void getrestrictedlength(std::string name, std::string& input, int size)
 {
-   do
+   while (input.size() > size || input.size() < 1)
    {
       std::cout << name;
       std::getline(std::cin, input);
    }
-   while (input.size() > size || input.size() < 1);
 }
 
 int main(int argc, char **argv)
@@ -35,16 +35,16 @@ int main(int argc, char **argv)
 
    while (command != "EXIT")
    {
-      command = "SEND";
+      //command = "SEND";
       std::cout << "Enter Command:" << std::endl;
-      //std::cin>>command;
+      std::cin>>command;
 
       if (command == "SEND")
       {
          std::string from, to, subject;
-         getrestrictedlength("From", from, 8);
-         getrestrictedlength("To", to, 8);
-         getrestrictedlength("Subject", subject, 8);
+         getrestrictedlength("From:", from, 8);
+         getrestrictedlength("To:", to, 8);
+         getrestrictedlength("Subject:", subject, 8);
 
          std::cout << std::endl << "Message: (The delim char is '.')";
 	 char message[256];
@@ -55,6 +55,20 @@ int main(int argc, char **argv)
          client.sendmessage(m);
 
          delete m;
+      }
+      else if(command == "LIST")
+      {
+	std::string user;
+	getrestrictedlength("Username:",user,8);
+	std::cout<<"here"<<std::endl;
+	Message * mes = new Listmessage(user);
+	std::cout<<"after new"<<std::endl;
+	client.sendmessage(mes);
+	std::cout<<"after send"<<std::endl;
+	client.waitresponse();
+	std::cout<<"after wait"<<std::endl;
+	delete mes;
+	std::cout<<"after del"<<std::endl;
       }
    }
 

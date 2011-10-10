@@ -25,6 +25,7 @@
 #include <iostream>
 #ifndef NETWORKBASE_H
 #define NETWORKBASE_H
+#include "message.h"
 
 class Networkbase
 {
@@ -41,7 +42,7 @@ public:
     IPv6 = AF_INET6,
     UDS = AF_LOCAL 
   };
-  
+
 Networkbase(NetworkAddressType, NetworkProtocolType, int);
 protected:
     sockaddr_in addr;

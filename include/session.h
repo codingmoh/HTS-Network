@@ -5,14 +5,17 @@
 #include <arpa/inet.h>
 #include <unistd.h>
 #include "directory.h"
+#include "serializer.h"
+#include "listmessage.h"
 #ifndef SESSION_H
 #define SESSION_H
-class Session
+
+class Session: public Serializer
 {
 private:
   int socketid;
   void startrecieveing();
-  Message * deserializemessage(char* msg);
+  //Message * deserializemessage(char* msg);
   bool executecommand(Message * message);
   Directory &userdir;
 public:

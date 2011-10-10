@@ -29,3 +29,4 @@ Networkbase::Networkbase(Networkbase::NetworkAddressType  addresstype,
   addr.sin_port = port;
   addr.sin_addr.s_addr = htonl(INADDR_ANY);
 }
+

@@ -1,5 +1,6 @@
 #include <string.h>
 #include "client.h"
+#include <listmessage.h>
 
 Client::Client(NetworkAddressType addresstype, 
 	       NetworkProtocolType protocoltype, 
@@ -21,13 +22,24 @@ bool Client::connect_to_target(std::string ip)
 
 void Client::sendmessage(Message *& message)
 {
-  const char * serializedmessage = this->serializemessage(message);
-  send(this->socket_descriptor,serializedmessage, strlen(serializedmessage),0);
+   Serializer::sendmessage(this->socket_descriptor, message);
 }
-const char* Client::serializemessage(Message *& message)
+void Client::waitresponse()
 {
-  std::stringstream ss;
-  boost::archive::text_oarchive oa(ss);
-  oa << message;
-  return ss.str().c_str();
+  Message * message = Serializer::receivemessage(this->socket_descriptor, 2048);
+  this->executecommand(message);
+}
+
+void Client::executecommand(Message*& message)
+{
+  std::cout<<"got back"<<std::endl;
+  std::cout<<message->getmessagetype()<<std::endl;
+  if(message->getmessagetype()==Message::mList)
+  {
+    std::vector<ListMessageElement> elem = dynamic_cast<Listmessage*>(message)->GetElements();
+    for(int i = 0; i< elem.size(); i++)
+    {
+      std::cout<<elem[i]._number<<":"<<elem[i]._subject<<std::endl;
+    }
+  }
 }
