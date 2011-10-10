@@ -36,12 +36,9 @@ void Session::executecommand(Message *& message)
       else if (message->getmessagetype() == Message::mList)
       {
          Listmessage  lm = *dynamic_cast<Listmessage*>(message);
-	 std::cout<<"USSSSSEEEEEEEEEEEEEEER"<<std::endl;
-         std::cout << lm.GetUserName() << std::endl;
+	 
          this->userdir_.getmessages(lm);
          Message * msg = &lm;
-         std::cout << lm.GetElements()[0].subject_ << std::endl;
-	 std::cout <<lm.GetElements().size()<<std::endl;
          Serializer::sendmessage(this->socketid_, msg);// ^^ ...OOP FTW xD
          this->startrecieveing();
       }

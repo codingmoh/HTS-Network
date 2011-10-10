@@ -1,3 +1,5 @@
+//Armin Mehr
+//Auf Mohamed
 #include <iostream>
 #include <sstream>
 #include "mail.h"
@@ -30,7 +32,7 @@ int main(int argc, char **argv)
    {
       std::string name;
       std::cout << "Please enter your username:" << std::endl;
-      std::cin >> name;
+      std::getline(std::cin,name);
       Client client(Client::IPv4, Client::TCP, atoi(argv[2]), name);
 
       if (client.connect_to_target(std::string(argv[1])))
@@ -55,7 +57,8 @@ int main(int argc, char **argv)
       {
          //command = "SEND";
          std::cout << "Enter Command:" << std::endl;
-         std::cin >> command;
+         std::getline(std::cin,command);
+
          if (command == "SEND")
          {
             std::string from, to, subject;
@@ -71,7 +74,7 @@ int main(int argc, char **argv)
 	    
             client.sendmessage(m);
 	    client.waitresponse();
-            delete m;
+            delete dynamic_cast<Mail*>(m);
          }
 
          else if (command == "LIST")
@@ -81,7 +84,7 @@ int main(int argc, char **argv)
             Message * mes = new Listmessage(user);
             client.sendmessage(mes);
 	    client.waitresponse();
-            delete mes;
+            delete dynamic_cast<Listmessage*>(mes);
          }
 
          else if (command == "EXIT")
@@ -93,10 +96,12 @@ int main(int argc, char **argv)
          {
             int nr;
             std::string name;
+	    std::string nur;
             std::cout << "Username:" << std::endl;
-            std::cin >> name;
+            std::getline(std::cin, name);
             std::cout << "NR:" << std::endl;
-            std::cin >> nr;
+            std::getline(std::cin,nur);
+	    nr = atoi(nur.c_str());
             Deletemessage dm(nr, name);
             Message * mes = &dm;
             client.sendmessage(mes);
@@ -113,6 +118,7 @@ int main(int argc, char **argv)
             Message * mes = new Read(user, atoi(number.c_str()));
             client.sendmessage(mes);
             client.waitresponse();
+	    delete dynamic_cast<Read*>(mes);
          }
       }
 
