@@ -194,7 +194,7 @@ Directory::getmessages(Listmessage & lm)
   else
     {
       // user existiert nicht
-      MessageException* m = new MessageException("ERR", "User existiert nicht");
+      MessageException m("ERR", "User existiert nicht");
       throw m;
     }
 }
