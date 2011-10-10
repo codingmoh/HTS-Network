@@ -41,6 +41,7 @@ void Client::executecommand(Message*& message)
   if(message->getmessagetype()==Message::mList)
   {
     std::vector<ListMessageElement> elem = dynamic_cast<Listmessage*>(message)->GetElements();
+    std::cout<<"COUNT:"<<elem.size()<<std::endl;
     for(int i = 0; i< elem.size(); i++)
     {
       std::cout<<elem[i].number_<<":"<<elem[i].subject_<<std::endl;
@@ -50,10 +51,10 @@ void Client::executecommand(Message*& message)
   {
     Mail* m = dynamic_cast<Mail*>(message);
     std::cout << "OK" << std::endl;
-    std::cout << m->sender_ << std::endl;
-    std::cout << m->receiver_ << std::endl;
-    std::cout << m->subject_ << std::endl;
-    std::cout << m->msg_ << std::endl;
+    std::cout<<"SENDER:" << m->sender_ << std::endl;
+    std::cout<<"RECEIVER:" << m->receiver_ << std::endl;
+    std::cout<<"SUBJECT" << m->subject_ << std::endl;
+    std::cout <<"MESSAGE:"<< m->msg_ << std::endl;
   }
   else if(message->getmessagetype()==Message::mStandard)
   {

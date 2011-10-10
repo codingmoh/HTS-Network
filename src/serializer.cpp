@@ -24,7 +24,6 @@ const char* Serializer::serializemessage(Message *& message)
 {
   std::stringstream ss;
   boost::archive::text_oarchive oa(ss);
-  std::cout<<message->getmessagetype()<<std::endl;
   oa << message;
   return ss.str().c_str();
 }

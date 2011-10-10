@@ -80,7 +80,7 @@ int main(int argc, char **argv)
             getrestrictedlength("Username:", user, 8);
             Message * mes = new Listmessage(user);
             client.sendmessage(mes);
-
+	    client.waitresponse();
             delete mes;
          }
 
