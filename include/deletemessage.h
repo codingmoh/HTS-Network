@@ -11,6 +11,7 @@ class Deletemessage: public Message
    {
       boost::serialization::base_object<Message>(*this);
       ar & number_;
+      ar & user_;
    }
 
    
