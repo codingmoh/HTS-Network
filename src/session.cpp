@@ -49,9 +49,9 @@ Session::executecommand(Message *& message)
           Serializer::sendmessage(this->socketid_, msg);// ^^ ...OOP FTW xD
         }
     }
-  catch (MessageException* e)
+  catch (MessageException& e)
     {
-      Message * msg = e;
+      Message * msg = &e;
       Serializer::sendmessage(this->socketid_, msg);
     }
   this->startrecieveing();
