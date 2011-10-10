@@ -67,7 +67,6 @@ int main(int argc, char **argv)
             char message[256];
             std::cin.getline(message, 256, '.');
 	    
-	    std::cout<<from<<to<<subject<<message<<std::endl;
             Message * m = new Mail(to, from, subject, message);
 	    
             client.sendmessage(m);
