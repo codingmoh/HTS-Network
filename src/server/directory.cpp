@@ -157,17 +157,32 @@ Directory::getmessage(std::string from, int number)
 
             else
             {
+
                 //message nicht vorhanden
+              //message nicht vorhanden
+              MessageException m("ERR", "Message does not exists");
+              throw m;
+
             }
         }
         else
         {
+
             // mailordner existiert nicht
+
+          // mailordner existiert nicht
+          MessageException m("ERR", "Messagenumber does not exists");
+          throw m;
+
         }
     }
     else
     {
-        // user existiert nicht
+        
+      // user existiert nicht
+      MessageException m("ERR", "User does not exists");
+      throw m;
+
     }
 }
 
@@ -193,9 +208,10 @@ Directory::getmessages(Listmessage & lm)
 
     else
     {
-        // user existiert nicht
-        MessageException m("ERR", "User existiert nicht");
-        throw m;
+      // user existiert nicht
+      MessageException m("ERR", "User does not exists");
+      throw m;
+
     }
 }
 

@@ -1,11 +1,13 @@
 #include <iostream>
 #include <sstream>
 #include "mail.h"
+#include "read.h"
 #include "client.h"
 #include <deletemessage.h>
 #include <listmessage.h>
 #include <signal.h>
-static void getrestrictedlength(std::string name, std::string& input, int size)
+static void
+getrestrictedlength(std::string name, std::string& input, int size)
 {
    while (input.size() > size || input.size() < 1)
    {
@@ -14,30 +16,34 @@ static void getrestrictedlength(std::string name, std::string& input, int size)
    }
 }
 
-int main(int argc, char **argv)
+int
+main(int argc, char **argv)
 {
    if (argc == 3)
    {
       std::string name;
       std::cout << "Please enter your username:" << std::endl;
-      std::cin>>name;
+      std::cin >> name;
       Client client(Client::IPv4, Client::TCP, atoi(argv[2]), name);
 
       if (client.connect_to_target(std::string(argv[1])))
       {
          std::cout << "Successfully connected" << std::endl;
-	 signal(SIGINT, SIG_IGN); 
+         signal(SIGINT, SIG_IGN);
       }
+
       else
       {
          std::cout << "Connection ERROR" << std::endl;
          exit(1);
       }
+
       /*void func(int);
-      
-      signal(SIGKILL,func);*/
-      
+
+       signal(SIGKILL,func);*/
+
       std::string command;
+
       while (command != "EXIT")
       {
          //command = "SEND";
@@ -62,32 +68,51 @@ int main(int argc, char **argv)
             delete m;
          }
 
-         else if (command == "LIST")
-         {
-            std::string user;
-            getrestrictedlength("Username:", user, 8);
-            Message * mes = new Listmessage(user);
-            client.sendmessage(mes);
-            client.waitresponse();
-            delete mes;            
-         }
-         else if (command == "EXIT")
-	 {
-	   client.closeconnection();
-	 }
-	 else if(command == "DEL")
-	 {
-	   int nr;
-	   std::string name;
-	   std::cout<<"Username:"<<std::endl;
-	   std::cin>>name;
-	   std::cout<<"NR:"<<std::endl;
-	   std::cin>>nr;
-	   Deletemessage dm(nr, name);
-	   Message * mes = &dm;
-	   client.sendmessage(mes);
-	}
+         else
+            if (command == "LIST")
+            {
+               std::string user;
+               getrestrictedlength("Username:", user, 8);
+               Message * mes = new Listmessage(user);
+               client.sendmessage(mes);
+               client.waitresponse();
+               delete mes;
+            }
+
+            else
+               if (command == "EXIT")
+               {
+                  client.closeconnection();
+               }
+
+               else
+                  if (command == "DEL")
+                  {
+                     int nr;
+                     std::string name;
+                     std::cout << "Username:" << std::endl;
+                     std::cin >> name;
+                     std::cout << "NR:" << std::endl;
+                     std::cin >> nr;
+                     Deletemessage dm(nr, name);
+                     Message * mes = &dm;
+                     client.sendmessage(mes);
+                  }
+
+                  else
+                     if (command == "READ")
+                     {
+                        std::string user;
+                        std::string number;
+                        getrestrictedlength("Username:", user, 8);
+                        std::cout << "Messagenumber: ";
+                        std::getline(std::cin, number);
+                        Message * mes = new Read(user, atoi(number.c_str()));
+                        client.sendmessage(mes);
+                        client.waitresponse();
+                     }
       }
+
 
       /*
        Message * mg = new Mail();

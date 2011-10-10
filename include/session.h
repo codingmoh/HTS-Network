@@ -8,6 +8,8 @@
 #include "serializer.h"
 #include "listmessage.h"
 #include "messageexception.h"
+#include "read.h"
+
 #ifndef SESSION_H
 #define SESSION_H
 
