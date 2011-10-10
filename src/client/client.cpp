@@ -26,8 +26,7 @@ void Client::sendmessage(Message *& message)
 }
 void Client::waitresponse()
 {
-  Message * message = Serializer::receivemessage(this->socket_descriptor_, 2048);
-  this->executecommand(message);
+  Serializer::receivemessage(this->socket_descriptor_, 2048);
 }
 
 void Client::executecommand(Message*& message)
