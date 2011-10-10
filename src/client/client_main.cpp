@@ -1,80 +1,94 @@
 #include <iostream>
 #include <sstream>
 #include "mail.h"
+#include "read.h"
 #include "client.h"
 #include <listmessage.h>
 #include <signal.h>
-static void getrestrictedlength(std::string name, std::string& input, int size)
+static void
+getrestrictedlength(std::string name, std::string& input, int size)
 {
-   while (input.size() > size || input.size() < 1)
-   {
+  while (input.size() > size || input.size() < 1)
+    {
       std::cout << name;
       std::getline(std::cin, input);
-   }
+    }
 }
 
-int main(int argc, char **argv)
+int
+main(int argc, char **argv)
 {
-   if (argc == 3)
-   {
+  if (argc == 3)
+    {
       std::string name;
       std::cout << "Please enter your username:" << std::endl;
-      std::cin>>name;
+      std::cin >> name;
       Client client(Client::IPv4, Client::TCP, atoi(argv[2]), name);
 
       if (client.connect_to_target(std::string(argv[1])))
-      {
-         std::cout << "Successfully connected" << std::endl;
-	 signal(SIGINT, SIG_IGN); 
-      }
+        {
+          std::cout << "Successfully connected" << std::endl;
+          signal(SIGINT, SIG_IGN);
+        }
       else
-      {
-         std::cout << "Connection ERROR" << std::endl;
-         exit(1);
-      }
+        {
+          std::cout << "Connection ERROR" << std::endl;
+          exit(1);
+        }
       /*void func(int);
-      
-      signal(SIGKILL,func);*/
-      
+
+       signal(SIGKILL,func);*/
+
       std::string command;
       while (command != "EXIT")
-      {
-         //command = "SEND";
-         std::cout << "Enter Command:" << std::endl;
-         std::cin >> command;
+        {
+          //command = "SEND";
+          std::cout << "Enter Command:" << std::endl;
+          std::cin >> command;
 
-         if (command == "SEND")
-         {
-            std::string from, to, subject;
-            getrestrictedlength("From:", from, 8);
-            getrestrictedlength("To:", to, 8);
-            getrestrictedlength("Subject:", subject, 8);
+          if (command == "SEND")
+            {
+              std::string from, to, subject;
+              getrestrictedlength("From:", from, 8);
+              getrestrictedlength("To:", to, 8);
+              getrestrictedlength("Subject:", subject, 8);
 
-            std::cout << std::endl << "Message: (The delim char is '.')";
-            char message[256];
-            std::cin.getline(message, 256, '.');
+              std::cout << std::endl << "Message: (The delim char is '.')";
+              char message[256];
+              std::cin.getline(message, 256, '.');
 
-            Message * m = new Mail(to, from, subject, message);
+              Message * m = new Mail(to, from, subject, message);
 
-            client.sendmessage(m);
+              client.sendmessage(m);
 
-            delete m;
-         }
+              delete m;
+            }
 
-         else if (command == "LIST")
-         {
-            std::string user;
-            getrestrictedlength("Username:", user, 8);
-            Message * mes = new Listmessage(user);
-            client.sendmessage(mes);
-            client.waitresponse();
-            delete mes;            
-         }
-         else if (command == "EXIT")
-	 {
-	   client.closeconnection();
-	 }
-      }
+          else if (command == "LIST")
+            {
+              std::string user;
+              getrestrictedlength("Username:", user, 8);
+              Message * mes = new Listmessage(user);
+              client.sendmessage(mes);
+              client.waitresponse();
+              delete mes;
+            }
+          else if (command == "READ")
+            {
+              std::string user;
+              std::string number;
+              getrestrictedlength("Username:", user, 8);
+              std::cout << "Messagenumber: ";
+              std::getline(std::cin, number);
+              Message * mes = new Read(user, atoi(number.c_str()));
+              client.sendmessage(mes);
+              client.waitresponse();
+            }
+          else if (command == "EXIT")
+            {
+              client.closeconnection();
+            }
+        }
 
       /*
        Message * mg = new Mail();
@@ -97,11 +111,11 @@ int main(int argc, char **argv)
        * ....usw
 
        }*/
-   }
+    }
 
-   else
-   {
+  else
+    {
       std::cout << "Wrong usage" << std::endl << "Usage:" << std::endl
-                << argv[0] << " <IP> <PORT>" << std::endl;
-   }
+          << argv[0] << " <IP> <PORT>" << std::endl;
+    }
 }

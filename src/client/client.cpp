@@ -47,5 +47,12 @@ void Client::executecommand(Message*& message)
     {
       std::cout<<elem[i].number_<<":"<<elem[i].subject_<<std::endl;
     }
+  }else if(message->getmessagetype()==Message::mMail){
+    Mail* m = dynamic_cast<Mail*>(message);
+    std::cout << "OK" << std::endl;
+    std::cout << m->sender_ << std::endl;
+    std::cout << m->receiver_ << std::endl;
+    std::cout << m->subject_ << std::endl;
+    std::cout << m->msg_ << std::endl;
   }
 }
