@@ -71,4 +71,5 @@ void Client::executecommand(Message*& message)
   {
     std::cout<<"ERR"<<std::endl;
   }
+  delete message;
 }
