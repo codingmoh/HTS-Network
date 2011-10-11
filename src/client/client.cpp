@@ -35,6 +35,7 @@ void Client::closeconnection()
   Message * message = new standard_messages (standard_messages::EXIT);
   sendmessage(message);
   close(this->socket_descriptor_);
+  delete message;
 }
 void Client::executecommand(Message*& message)
 {
