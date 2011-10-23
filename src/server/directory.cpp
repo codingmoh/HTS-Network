@@ -52,7 +52,7 @@ Directory::savemessage(Mail& msg)
          std::ofstream myfile(file.c_str());
          boost::archive::text_oarchive oa(myfile);
          oa << msg;
-         myfile.close();
+         //myfile.close();
 
          //alles ok
       }
@@ -172,7 +172,7 @@ Directory::getmessage(std::string from, int number)
             Mail msg;
             boost::archive::text_iarchive ia(myfile);
             ia >> msg;
-            myfile.close();
+           // myfile.close();
             msg.number_ = number;
             return msg;
          }
