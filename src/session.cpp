@@ -10,7 +10,7 @@ Session::Session(int socketid, Directory& userdir) :
 
 void Session::start()
 {
-   /*boost::thread sessionthread(&Session::startrecieveing, this);
+   /*  boost::thread sessionthread(&Session::startrecieveing, this);
    sessionthread.join();*/
    startrecieveing();
 }
