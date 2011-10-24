@@ -4,6 +4,7 @@
 #include <sstream>
 #include "mail.h"
 #include "read.h"
+#include "login.h"
 #include "client.h"
 #include <deletemessage.h>
 #include <listmessage.h>
@@ -35,6 +36,8 @@ int main(int argc, char **argv)
       std::getline(std::cin,name);
       Client client(Client::IPv4, Client::TCP, atoi(argv[2]), name);
 
+
+
       if (client.connect_to_target(std::string(argv[1])))
       {
          std::cout << "Successfully connected" << std::endl;
@@ -46,6 +49,25 @@ int main(int argc, char **argv)
          std::cout << "Connection ERROR" << std::endl;
          exit(1);
       }
+
+      /** beginn testen von login **/
+      std::string user, password;
+      std::cout << "Please enter your username:" << std::endl;
+      std::getline(std::cin,user);
+      std::cout << "Please enter your password:" << std::endl;
+      std::getline(std::cin,password);
+
+      Login lo(user,password);
+      Message * lomes = &lo;
+      client.sendmessage(lomes);
+      client.waitresponse();
+
+      if(client.loggedIn == true){
+       std::cout << "trueeee" <<std::endl;
+      }else{
+        std::cout << "falseeee" << std::endl;
+      }
+      /** ende testen von login **/
 
       /*void func(int);
 

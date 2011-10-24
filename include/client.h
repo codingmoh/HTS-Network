@@ -22,6 +22,7 @@ private:
   std::string username_;
   //const char * serializemessage(Message *& message);
 public:
+  bool loggedIn;
   Client(NetworkAddressType, NetworkProtocolType, int, std::string);
   bool connect_to_target(std::string);
   std::string getusername();	

@@ -9,7 +9,7 @@ Client::Client(NetworkAddressType addr_esstype,
 	       int port, std::string username):
 	       Networkbase(addr_esstype, protocoltype, port)
 {
- 
+ loggedIn=false;
 }
 
 bool Client::connect_to_target(std::string ip)
@@ -62,6 +62,7 @@ void Client::executecommand(Message*& message)
     if(dynamic_cast<standard_messages*>(message)->type_ == standard_messages::OK)
     {
       std::cout<<"OK"<<std::endl;
+      loggedIn=true;
     }
     else if(dynamic_cast<standard_messages*>(message)->type_ == standard_messages::ERR)
     {

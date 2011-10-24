@@ -45,6 +45,7 @@ void Serializer::sendmessage(int socket_id, Message*& message)
 
 Message* Serializer::receivemessage(int socket_id, int buffer)
 {
+
   char buf[buffer];
   recv(socket_id, &buf, buffer-1, 0);
   Message * m = this->deserializemessage(buf);
