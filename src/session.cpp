@@ -31,10 +31,12 @@ void Session::executecommand(Message *& message)
            Login * msg = dynamic_cast<Login*>(message);
            bool ok =this->ldaplogin_.loginuser(msg->user_, msg->password_);
            if(ok==true){
+	     std::cout<<"true"<<std::endl;
              standard_messages sm(standard_messages::OK);
              Message * mes = &sm;
              Serializer::sendmessage(this->socketid_, mes);
            }else{
+	     std::cout<<"false"<<std::endl;
              standard_messages sm(standard_messages::ERR);
              Message * mes = &sm;
              Serializer::sendmessage(this->socketid_, mes);

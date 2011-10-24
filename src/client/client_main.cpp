@@ -31,14 +31,14 @@ int main(int argc, char **argv)
 {
    if (argc == 3)
    {
-      std::string name;
-      std::cout << "Please enter your username:" << std::endl;
-      std::getline(std::cin,name);
-      Client client(Client::IPv4, Client::TCP, atoi(argv[2]), name);
+//       std::string name;
+//       std::cout << "Please enter your username:" << std::endl;
+//       std::getline(std::cin,name);
+      Client client(Client::IPv4, Client::TCP, atoi(argv[2]), "");
       
       if (client.connect_to_target(std::string(argv[1])))
       {
-         std::cout << "Successfully connected" << std::endl;
+         std::cout << "+ connected to server" << std::endl;
          signal(SIGINT, SIG_IGN);
       }
 
@@ -49,21 +49,34 @@ int main(int argc, char **argv)
       }
 
       /** beginn testen von login **/
-      std::string user, password;
-      std::cout << "Please enter your username:" << std::endl;
-      std::getline(std::cin,user);
-      std::cout << "Please enter your password:" << std::endl;
-      std::getline(std::cin,password);
+     
+       std::string clientuser;
+      std::string command;
 
-      Login lo(user,password);
-      Message * lomes = &lo;
-      client.sendmessage(lomes);
-      client.waitresponse();
+      while (command!="EXIT")
+      {
+	std::cout << "Enter Command: (LOGIN, EXIT)" << std::endl;
+         std::getline(std::cin,command);
+	 if (command == "LOGIN")
+	    {
+	       std::string  password;
+	    getrestrictedlength("Username:(max. 8)", clientuser, 8);
+	    std::cout << "Password:" << std::endl;
+	    std::getline(std::cin,password);
 
-      if(client.loggedIn == true){
-       std::cout << "trueeee" <<std::endl;
-      }else{
-        std::cout << "falseeee" << std::endl;
+	    Login lo(clientuser,password);
+	    Message * lomes = &lo;
+	    client.sendmessage(lomes);
+	    client.waitresponse();
+
+	    if(client.loggedIn == true){
+	      std::cout << "+ authenticated on server" <<std::endl;
+	      break;
+	    }	
+	 }else if (command == "EXIT")
+         {
+            client.closeconnection();
+         }
       }
       /** ende testen von login **/
 
@@ -71,18 +84,18 @@ int main(int argc, char **argv)
 
        signal(SIGKILL,func);*/
 
-      std::string command;
+     // command="";
 
       while (command != "EXIT")
       {
          //command = "SEND";
-         std::cout << "Enter Command:" << std::endl;
+         std::cout << "Enter Command: (SEND, LIST, READ, DEL, EXIT)" << std::endl;
          std::getline(std::cin,command);
 
          if (command == "SEND")
          {
             std::string from, to, subject;
-            getrestrictedlength("From:(max. 8)", from, 8);
+           // getrestrictedlength("From:(max. 8)", from, 8);
             getrestrictedlength("To: (max. 8)", to, 8);
             getrestrictedlength("Subject: (max. 80)", subject, 80);
 	    
@@ -91,7 +104,7 @@ int main(int argc, char **argv)
 	    std::string mmm;
             std::cin.getline(message, 1024, '.');
 	    std::cin.ignore();
-            Message * m = new Mail(to, from, subject, message);
+            Message * m = new Mail(to, clientuser, subject, message);
 	    
             client.sendmessage(m);
 	    client.waitresponse();
