@@ -40,6 +40,7 @@ Message * Serializer::deserializemessage(char* msg)
 void Serializer::sendmessage(int socket_id, Message*& message)
 {
   const char * serializedmessage = serializemessage(message);
+  
   send(socket_id, serializedmessage, strlen(serializedmessage),0);
 }
 

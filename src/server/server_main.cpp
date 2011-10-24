@@ -2,7 +2,8 @@
 //Auf Mohamed
 #include "server.h"
 #include "directory.h"
-#include "ldaplogin.h"
+#include <signal.h>
+#include <ldaplogin.h>
 
 int main(int argc, char** argv)
 {
