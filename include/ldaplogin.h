@@ -20,6 +20,8 @@
 #ifndef LDAPLOGIN_H
 #define LDAPLOGIN_H
 #include "messageexception.h"
+#include <ldap.h>
+#include <lber.h>
 
 class Ldaplogin
 {
@@ -28,6 +30,7 @@ public:
   std::string ldap_host;
   int ldap_port;
   std::string searchbase;
+  LDAP *ld; /* LDAP resource handle */
 
    Ldaplogin(std::string ldap_host, int port, std::string searchbase);
    bool checkuser(std::string);
