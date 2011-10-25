@@ -18,7 +18,6 @@
 */
 
 #include "networkbase.h"
-
 Networkbase::Networkbase(Networkbase::NetworkAddressType  addresstype, 
 			 Networkbase::NetworkProtocolType protocol, int port)
 {
