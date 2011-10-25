@@ -35,9 +35,7 @@ int main(int argc, char **argv)
       std::cout << "Please enter your username:" << std::endl;
       std::getline(std::cin,name);
       Client client(Client::IPv4, Client::TCP, atoi(argv[2]), name);
-
-
-
+      
       if (client.connect_to_target(std::string(argv[1])))
       {
          std::cout << "Successfully connected" << std::endl;
