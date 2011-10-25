@@ -2,6 +2,7 @@
 //Auf Mohamed
 #include "server.h"
 #include "directory.h"
+#include <signal.h>
 
 int main(int argc, char** argv)
 {
