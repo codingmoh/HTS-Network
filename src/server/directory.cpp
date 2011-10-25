@@ -233,8 +233,7 @@ Directory::getmessages(Listmessage & lm)
     }
 }
 
-bool
-Directory::adduserdirectory(std::string user)
+bool Directory::adduserdirectory(std::string user)
 {
     if (existspoolpathOtherwiseCreate() == 1)
     {
