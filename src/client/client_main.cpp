@@ -62,14 +62,14 @@ int main(int argc, char **argv)
          if (command == "SEND")
          {
             std::string from, to, subject;
-            getrestrictedlength("From:", from, 8);
-            getrestrictedlength("To:", to, 8);
-            getrestrictedlength("Subject:", subject, 80);
+            getrestrictedlength("From:(max. 8)", from, 8);
+            getrestrictedlength("To: (max. 8)", to, 8);
+            getrestrictedlength("Subject: (max. 80)", subject, 80);
 	    
             std::cout <<"Message: (The delim char is '.')";
-            char message[256];
+            char message[1024];
 	    std::string mmm;
-            std::cin.getline(message, 256, '.');
+            std::cin.getline(message, 1024, '.');
 	    std::cin.ignore();
             Message * m = new Mail(to, from, subject, message);
 	    
