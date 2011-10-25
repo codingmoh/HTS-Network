@@ -13,7 +13,8 @@ class Message
       mRead,
       mStandard,
       mException,
-      mDelete
+      mDelete,
+      mLogin
     };
     
   public:

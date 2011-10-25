@@ -21,8 +21,8 @@
 #include <message.h>
 #include <mail.h>
 
-Server::Server(NetworkAddressType networktype, NetworkProtocolType protocoltype,int port, Directory & rootdir):
-	       Networkbase(networktype,protocoltype,port), rootdirectory_(rootdir)
+Server::Server(NetworkAddressType networktype, NetworkProtocolType protocoltype,int port, Directory & rootdir, Ldaplogin & ldap):
+	       Networkbase(networktype,protocoltype,port), rootdirectory_(rootdir), ldaplogin_(ldap)
 {
   bind(this->socket_descriptor_, 
        (struct sockaddr*) &this->addr_,sizeof(this->addr_));
@@ -35,7 +35,7 @@ void Server::waitforincome()
   int new_socket;
   while((new_socket = accept(this->socket_descriptor_,(struct sockaddr *) &client_addr, &addrlen))< 1);
   std::cout<<"client connected"<<std::endl;
-  Session *  session = new Session(new_socket,this->rootdirectory_);
+  Session *  session = new Session(new_socket,this->rootdirectory_, this->ldaplogin_);
  // sessions.push_back(session);
   session->start();
   //close(this->socket_descriptor_);

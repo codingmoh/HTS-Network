@@ -2,15 +2,15 @@
 #include <standard_messages.h>
 #include <deletemessage.h>
 
-Session::Session(int socketid, Directory& userdir) :
-      userdir_(userdir), socketid_(socketid)
+Session::Session(int socketid, Directory& userdir, Ldaplogin& ldap) :
+      userdir_(userdir), socketid_(socketid), ldaplogin_(ldap)
 {
 
 }
 
 void Session::start()
 {
-   /*boost::thread sessionthread(&Session::startrecieveing, this);
+   /*  boost::thread sessionthread(&Session::startrecieveing, this);
    sessionthread.join();*/
    startrecieveing();
 }
@@ -26,7 +26,22 @@ void Session::executecommand(Message *& message)
    {
       if (message->getmessagetype() != Message::mStandard)
       {
-         if (message->getmessagetype() == Message::mMail)
+         if (message->getmessagetype() == Message::mLogin)
+         {
+           Login * msg = dynamic_cast<Login*>(message);
+           bool ok =this->ldaplogin_.loginuser(msg->user_, msg->password_);
+           if(ok==true){
+             standard_messages sm(standard_messages::OK);
+             Message * mes = &sm;
+             Serializer::sendmessage(this->socketid_, mes);
+           }else{
+             standard_messages sm(standard_messages::ERR);
+             Message * mes = &sm;
+             Serializer::sendmessage(this->socketid_, mes);
+           }
+         }
+
+         else if (message->getmessagetype() == Message::mMail)
          {
             this->userdir_.savemessage(*dynamic_cast<Mail*>(message));
             standard_messages sm(standard_messages::OK);

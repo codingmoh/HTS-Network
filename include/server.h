@@ -23,6 +23,7 @@
 #include "session.h"
 #include "message.h"
 #include "directory.h"
+#include "ldaplogin.h"
 #ifndef SERVER_H
 #define SERVER_H
 
@@ -33,9 +34,10 @@ private:
   std::vector<sockaddr_in> _clientadresses;
   std::map<int, Directory*> user_directories;
   Directory& rootdirectory_;
+  Ldaplogin& ldaplogin_;
   
 public:
-  Server(NetworkAddressType, NetworkProtocolType,int, Directory &);
+  Server(NetworkAddressType, NetworkProtocolType,int, Directory &, Ldaplogin &);
   void waitforincome();
   ~Server();
 private:  
