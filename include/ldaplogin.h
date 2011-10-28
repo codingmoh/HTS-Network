@@ -27,16 +27,21 @@ class Ldaplogin
 {
 
 public:
-   Ldaplogin(std::string ldap_host, int port, std::string searchbase);
+   Ldaplogin(std::string ost, std::string user, std::string password, int version, std::string base);
    
    bool loginuser(std::string, std::string);
 
 private:
   LDAP *ld; /* LDAP resource handle */
   bool checkuser(std::string);
+  void ldapBind(std::string, std::string);
+  void ldapUnbind();
+  
   std::string ldap_host;
-  int ldap_port;
+  std::string ldap_user;
+  std::string ldap_password;
   std::string searchbase;
+  int ldap_version;
 
 };
 
