@@ -26,10 +26,12 @@ void Client::sendmessage(Message *& message)
 {
    Serializer::sendmessage(this->socket_descriptor_, message);
 }
+
 void Client::waitresponse()
 {
   Serializer::receivemessage(this->socket_descriptor_, 2048);
 }
+
 void Client::closeconnection()
 {
   Message * message = new standard_messages (standard_messages::EXIT);

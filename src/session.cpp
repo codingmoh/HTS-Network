@@ -10,9 +10,9 @@ Session::Session(int socketid, Directory& userdir, Ldaplogin& ldap) :
 
 void Session::start()
 {
-   /*  boost::thread sessionthread(&Session::startrecieveing, this);
-   sessionthread.join();*/
-   startrecieveing();
+   boost::thread sessionthread(&Session::startrecieveing, this);
+   sessionthread.join();
+   //startrecieveing();
 }
 
 void Session::startrecieveing()
