@@ -33,7 +33,7 @@ const char* Serializer::serializemessage(Message *& message)
   char arr[2048];
   ssst.copy(arr,ssst.size());
   std::cout<<"size char"<<strlen(sstr)<<std::endl;
-  std::cout<<arr;
+  std::cout<<arr<<std::endl;
   return sstr;
 }
 
@@ -48,11 +48,11 @@ Message * Serializer::deserializemessage(char* msg)
 
 void Serializer::sendmessage(int socket_id, Message*& message)
 {
-  const char * serializedmessage = serializemessage(message);
-  std::cout<<"SENDING:"<<serializedmessage<<std::endl;
   int x = 0;
   while(x==0)
   {
+    const char * serializedmessage = serializemessage(message);
+    std::cout<<"SENDING:"<<serializedmessage<<std::endl;
     x = send(socket_id, serializedmessage, strlen(serializedmessage),0);
     usleep(300000);
     std::cout<<"VAL "<<x<<std::endl;

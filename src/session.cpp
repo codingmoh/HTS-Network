@@ -45,6 +45,7 @@ void Session::executecommand(Message *& message)
                Message * mes = &sm;
                Serializer::sendmessage(this->socketid_, mes);
             }
+            delete message;
             this->startrecieveing();
          }
       }
