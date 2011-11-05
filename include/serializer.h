@@ -35,7 +35,8 @@
 class Serializer
 {
 private: 
-  const char* serializemessage(Message *& );
+  //const char* serializemessage(Message *& );
+  std::string serializemessage(Message *& );
   Message * deserializemessage(char*);
 protected:
   void sendmessage(int, Message *&);
