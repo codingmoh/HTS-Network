@@ -16,6 +16,10 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 */
+
+#ifndef NETWORKBASE_H
+#define NETWORKBASE_H
+#include "message.h"
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
@@ -23,10 +27,6 @@
 #include <errno.h>
 #include <exception>
 #include <iostream>
-#ifndef NETWORKBASE_H
-#define NETWORKBASE_H
-#include "message.h"
-
 class Networkbase
 {
 public:

@@ -20,23 +20,28 @@
 #include "listmessage.h"
 
 
-void Listmessage::AddElement(ListMessageElement& element)
+/*void Listmessage::AddElement(ListMessageElement& element)
 {
   this->elements_.push_back(element);
-}
+}*/
 
 void Listmessage::AddElement(Mail mail)
 {
-  ListMessageElement el(mail.subject_, mail.number_);
-  this->elements_.push_back(el);
+  //ListMessageElement el(mail.subject_, mail.number_);
+  this->elements_.push_back(mail.subject_);
 }
 
 std::string Listmessage::GetUserName()
 {
   return this->username_;
 }
-
-std::vector<ListMessageElement>  Listmessage::GetElements()
+/*
+std::vector<ListMessageElement >  Listmessage::GetElements()
 {
  return this->elements_; 
+}*/
+
+std::vector<std::string> Listmessage::GetElements()
+{
+  return this->elements_;
 }

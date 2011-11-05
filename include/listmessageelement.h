@@ -1,9 +1,13 @@
-#include <string>
-#include <boost/serialization/access.hpp>
+
 //#include "listmessage.h"
 
 #ifndef LISTMESSAGEELEMENT_H
 #define LISTMESSAGEELEMENT_H
+#include <string>
+#include <boost/serialization/access.hpp>
+#include <boost/serialization/vector.hpp>
+#include <boost/serialization/string.hpp>
+
 class ListMessageElement
 { 
   friend class boost::serialization::access;

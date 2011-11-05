@@ -1,7 +1,7 @@
-#include "message.h"
+
 #ifndef LOGIN_H
 #define LOGIN_H
-
+#include "message.h"
 class Login: public Message
 {
    friend class boost::serialization::access;
@@ -30,5 +30,5 @@ public:
    }
 };
 
-BOOST_CLASS_EXPORT(Login);
+//BOOST_CLASS_EXPORT(Login);
 #endif // SERVER_H

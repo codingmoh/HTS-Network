@@ -1,6 +1,7 @@
-#include "message.h"
+
 #ifndef MESSAGEEXCEPTION_H
 #define MESSAGEEXCEPTION_H
+#include "message.h"
 
 class MessageException : public Message
 {
@@ -30,5 +31,5 @@ public:
     }
 };
 
-BOOST_CLASS_EXPORT(MessageException);
+//BOOST_CLASS_EXPORT(MessageException);
 #endif

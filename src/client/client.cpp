@@ -1,8 +1,4 @@
-#include <string.h>
 #include "client.h"
-#include <listmessage.h>
-#include <standard_messages.h>
-#include <messageexception.h>
 
 Client::Client(NetworkAddressType addr_esstype, 
 	       NetworkProtocolType protocoltype, 
@@ -43,11 +39,12 @@ void Client::executecommand(Message*& message)
 {
   if(message->getmessagetype()==Message::mList)
   {
-    std::vector<ListMessageElement> elem = dynamic_cast<Listmessage*>(message)->GetElements();
+//     std::vector<ListMessageElement> elem = dynamic_cast<Listmessage*>(message)->GetElements();
+       std::vector<std::string> elem = dynamic_cast<Listmessage*>(message)->GetElements();
     std::cout<<"COUNT:"<<elem.size()<<std::endl;
     for(int i = 0; i< elem.size(); i++)
     {
-      std::cout<<elem[i].number_<<":"<<elem[i].subject_<<std::endl;
+      std::cout<<elem[i]<<std::endl;
     }
   }
   else if(message->getmessagetype()==Message::mMail)

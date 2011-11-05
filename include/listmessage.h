@@ -16,29 +16,33 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 */
-#include "message.h"
-#include "listmessageelement.h"
-#include "mail.h"
-#include <boost/serialization/vector.hpp>
-#include <vector>
+
 
 #ifndef LISTMESSAGE_H
 #define LISTMESSAGE_H
-
+#include "message.h"
+//#include "listmessageelement.h"
+#include "mail.h"
+#include <boost/serialization/vector.hpp>
+//#include <boost/serialization/string.hpp>
+#include <vector>
 
 class Listmessage: public Message
 {
+   //typedef std::pair<std::string, int> ListMessageElement;
    friend class boost::serialization::access;
+   std::string username_;
+  // std::vector<ListMessageElement > elements_;
+   std::vector<std::string> elements_;
    template<class Archive>
    void serialize(Archive & ar, const unsigned int version)
    {
-      
-      boost::serialization::base_object<Message>(*this);
+     boost::serialization::base_object<Message>(*this);
       ar & elements_;
       ar & username_;
+      
    }
-  std::string username_;
-  std::vector<ListMessageElement> elements_;
+  
 public:
    Listmessage(std::string user):Message(Message::mList), username_(user)
    {
@@ -49,10 +53,12 @@ public:
      
    }
    
-   void AddElement(ListMessageElement&);
+   //void AddElement(ListMessageElement&);
+   void AddElement(std::string);
    void AddElement(Mail);
-   std::vector<ListMessageElement> GetElements();
+   //std::vector<ListMessageElement> GetElements();
+   std::vector<std::string> GetElements();
    std::string GetUserName();
 };
-BOOST_CLASS_EXPORT(Listmessage);
+//BOOST_CLASS_EXPORT(Listmessage);
 #endif // LISTMESSAGE_H

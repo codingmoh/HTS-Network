@@ -16,11 +16,12 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
  */
+
+#ifndef DIRECTORY_H
+#define DIRECTORY_H
 #include <string>
 #include <vector>
 #include <map>
-#ifndef DIRECTORY_H
-#define DIRECTORY_H
 #include "mail.h"
 #include "listmessage.h"
 #include "messageexception.h"

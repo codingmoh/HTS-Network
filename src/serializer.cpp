@@ -18,14 +18,23 @@
 */
 
 #include "serializer.h"
-#include <listmessage.h>
+#include "EXPORTS.h"
 
 const char* Serializer::serializemessage(Message *& message)
 {
   std::stringstream ss;
   boost::archive::text_oarchive oa(ss);
   oa << message;
-  return ss.str().c_str();
+  std::cout<<"size of str:"<<ss.str().size()<<std::endl;
+  std::cout<<ss.str()<<std::endl;
+  //ss<<'\0';
+  std::string ssst =  ss.str();
+  const char * sstr = ssst.c_str();
+  char arr[2048];
+  ssst.copy(arr,ssst.size());
+  std::cout<<"size char"<<strlen(sstr)<<std::endl;
+  std::cout<<arr;
+  return sstr;
 }
 
 Message * Serializer::deserializemessage(char* msg)
@@ -40,8 +49,15 @@ Message * Serializer::deserializemessage(char* msg)
 void Serializer::sendmessage(int socket_id, Message*& message)
 {
   const char * serializedmessage = serializemessage(message);
-  
-  send(socket_id, serializedmessage, strlen(serializedmessage),0);
+  std::cout<<"SENDING:"<<serializedmessage<<std::endl;
+  int x = 0;
+  while(x==0)
+  {
+    x = send(socket_id, serializedmessage, strlen(serializedmessage),0);
+    usleep(300000);
+    std::cout<<"VAL "<<x<<std::endl;
+  }
+  std::cout<<"return Val:"<<x<<std::endl;
 }
 
 Message* Serializer::receivemessage(int socket_id, int buffer)

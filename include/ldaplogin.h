@@ -28,7 +28,6 @@ class Ldaplogin
 
 public:
    Ldaplogin(std::string ost, std::string user, std::string password, int version, std::string base);
-   
    bool loginuser(std::string, std::string);
 
 private:

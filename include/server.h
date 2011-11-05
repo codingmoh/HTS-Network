@@ -16,35 +16,37 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 */
+
+#ifndef SERVER_H
+#define SERVER_H
 #include <networkbase.h>
 #include <boost/thread.hpp>
 #include <boost/archive/text_oarchive.hpp>
 #include <boost/archive/text_iarchive.hpp>
+#include <boost/interprocess/sync/scoped_lock.hpp>
 #include "session.h"
 #include "message.h"
 #include "directory.h"
 #include "ldaplogin.h"
-#ifndef SERVER_H
-#define SERVER_H
-
 class Server:public Networkbase
 {
 private:
-  std::vector<Session*> sessions;
-  std::vector<sockaddr_in> _clientadresses;
-  std::map<int, Directory*> user_directories;
+  std::vector<Session*> sessions_;
+  std::vector<sockaddr_in> clientadresses_;
+  std::map<int, Directory*> user_directories_;
   Directory& rootdirectory_;
   Ldaplogin& ldaplogin_;
-  
+  bool stop_;
+  boost::mutex m_mutex_;
+  boost::condition_variable cond;
 public:
   Server(NetworkAddressType, NetworkProtocolType,int, Directory &, Ldaplogin &);
-  void waitforincome();
+  void startlistening();
   ~Server();
 private:  
-  void createdirectory();
+  boost::thread * t_listener_;
   void startsession(int);
-  Message * deserializemessage(char* msg);
-  void executecommand(Message * message);
+  void waitforincome();
 };
 
 

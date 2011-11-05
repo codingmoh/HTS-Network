@@ -30,5 +30,5 @@ public:
    }
 };
 
-BOOST_CLASS_EXPORT(Deletemessage);
+//BOOST_CLASS_EXPORT(Deletemessage);
 #endif // SERVER_H

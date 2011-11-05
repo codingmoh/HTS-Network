@@ -1,8 +1,10 @@
+
+#ifndef MESSAGE_H
+#define MESSAGE_H
 #include <boost/archive/text_oarchive.hpp>
 #include <boost/archive/text_iarchive.hpp>
 #include <boost/serialization/export.hpp>
-#ifndef MESSAGE_H
-#define MESSAGE_H
+
 class Message
 {  
   public:

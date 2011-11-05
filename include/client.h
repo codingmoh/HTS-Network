@@ -1,19 +1,20 @@
+#ifndef CLIENT_H
+#define CLIENT_H
+
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <unistd.h>
 #include <errno.h>
 #include <sstream>
-#include <boost/archive/text_oarchive.hpp>
-#include <boost/archive/text_iarchive.hpp>
+#include "message.h"
 #include "serializer.h"
 #include "networkbase.h"
 #include "mail.h"
-
-
-#ifndef CLIENT_H
-#define CLIENT_H
-
+#include <string.h>
+#include <listmessage.h>
+#include <standard_messages.h>
+#include <messageexception.h>
 
 
 class Client : public Networkbase, public Serializer

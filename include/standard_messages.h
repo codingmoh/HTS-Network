@@ -17,9 +17,12 @@
 
 */
 
+
+
 #ifndef STANDARD_MESSAGES_H
 #define STANDARD_MESSAGES_H
 #include "message.h"
+
 class standard_messages:public Message
 {
 private:
@@ -49,5 +52,5 @@ public:
   }
 };
 
-BOOST_CLASS_EXPORT(standard_messages);
+//BOOST_CLASS_EXPORT(standard_messages);
 #endif // STANDARD_MESSAGES_H

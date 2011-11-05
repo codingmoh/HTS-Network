@@ -22,28 +22,48 @@
 #include <mail.h>
 
 Server::Server(NetworkAddressType networktype, NetworkProtocolType protocoltype,int port, Directory & rootdir, Ldaplogin & ldap):
-	       Networkbase(networktype,protocoltype,port), rootdirectory_(rootdir), ldaplogin_(ldap)
+	       Networkbase(networktype,protocoltype,port), rootdirectory_(rootdir), ldaplogin_(ldap), stop_(0)
 {
   bind(this->socket_descriptor_, 
        (struct sockaddr*) &this->addr_,sizeof(this->addr_));
+  
+}
+void Server::startlistening()
+{
   listen(this->socket_descriptor_, 5);
+  this->t_listener_ =  new boost::thread(&Server::waitforincome,this);
+  t_listener_->detach();
 }
 void Server::waitforincome()
 {
-  sockaddr_in client_addr;
-  socklen_t addrlen;
-  int new_socket;
-  while((new_socket = accept(this->socket_descriptor_,(struct sockaddr *) &client_addr, &addrlen))< 1);
-  std::cout<<"client connected"<<std::endl;
-  Session *  session = new Session(new_socket,this->rootdirectory_, this->ldaplogin_);
-  sessions.push_back(session);
-  session->start();
-  close(this->socket_descriptor_);
-  this->waitforincome();
+  boost::mutex::scoped_lock lock(m_mutex_);
+  if(!stop_)
+  {
+    lock.unlock();
+    sockaddr_in client_addr;
+    socklen_t addrlen;
+    int new_socket;
+    while((new_socket = accept(this->socket_descriptor_,(struct sockaddr *) &client_addr, &addrlen))< 1);
+    std::cout<<"client connected"<<std::endl;
+    Session * session = new Session(new_socket,this->rootdirectory_, this->ldaplogin_);
+    sessions_.push_back(session);
+    session->start();
+    close(this->socket_descriptor_);
+    this->waitforincome();
+  }
+  else
+  {
+    //cond.notify_one();
+    std::cout<<"bye!"<<std::endl;
+  }
 }
 
 
 Server::~Server()
 {
-  //KILL SESSIONS
+  boost::mutex::scoped_lock lock(m_mutex_);
+  stop_=true;
+  lock.unlock();
+  this->t_listener_->interrupt();
+  std::cout<<"Server Shutdown!"<<std::endl;
 }

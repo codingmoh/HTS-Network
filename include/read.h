@@ -1,7 +1,7 @@
-#include "message.h"
+
 #ifndef READ_H
 #define READ_H
-
+#include "message.h"
 class Read: public Message
 {
    friend class boost::serialization::access;
@@ -30,5 +30,5 @@ public:
    }
 };
 
-BOOST_CLASS_EXPORT(Read);
+//BOOST_CLASS_EXPORT(Read);
 #endif // SERVER_H

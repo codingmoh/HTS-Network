@@ -1,7 +1,7 @@
-#include "message.h"
+
 #ifndef MAIL_H
 #define MAIL_H
-
+#include "message.h"
 class Mail: public Message
 {
    friend class boost::serialization::access;
@@ -39,5 +39,5 @@ public:
    }
 };
 
-BOOST_CLASS_EXPORT(Mail);
+//BOOST_CLASS_EXPORT(Mail);
 #endif // SERVER_H

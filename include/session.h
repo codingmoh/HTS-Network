@@ -1,3 +1,8 @@
+
+
+#ifndef SESSION_H
+#define SESSION_H
+
 #include "mail.h"
 #include <boost/thread.hpp>
 #include <sys/socket.h>
@@ -11,21 +16,22 @@
 #include "messageexception.h"
 #include "read.h"
 #include "login.h"
-
-#ifndef SESSION_H
-#define SESSION_H
+#include <standard_messages.h>
+#include <deletemessage.h>
 
 class Session: public Serializer
 {
 private:
   int socketid_;
   void startrecieveing();
+  bool loggedin_;
   //Message * deserializemessage(char* msg);
   void executecommand(Message *& message);
-  Directory &userdir_;
-  Ldaplogin &ldaplogin_;
+  boost::thread * sessionthread_;
+  Directory userdir_;
+  Ldaplogin& ldaplogin_;
 public:
-  Session(int socketid,Directory &, Ldaplogin &);
+  Session(int, Directory, Ldaplogin& );
   void start();
   ~Session();
 };
