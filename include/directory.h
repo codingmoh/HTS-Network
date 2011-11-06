@@ -26,10 +26,12 @@
 #include "listmessage.h"
 #include "messageexception.h"
 
+struct stat;
 class Directory
 {
-
+   
 public:
+   bool fileexists(std::string);
    std::string pool_path_;
    Directory(std::string path);
    bool adduserdirectory(std::string);
@@ -40,7 +42,6 @@ public:
 
 private:
    bool exists(std::string);
-   bool fileexists(std::string);
    bool existspoolpathOtherwiseCreate();
    bool existsuserdir(std::string);
    bool existsuserdirOtherwiseCreate(std::string);

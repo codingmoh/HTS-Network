@@ -112,8 +112,23 @@ int main(int argc, char **argv)
             std::string mmm;
             std::cin.getline(message, 1024, '.');
             std::cin.ignore();
-            Message * m = new Mail(to, clientuser, subject, message);
 
+            
+	    Message * m = new Mail(to, clientuser, subject, message);
+	    
+	    do
+	    {
+	      std::cout<<"Attachment (leave empty, for sending without):";
+	      std::string f="";
+	      std::cin >> f;
+	      std::cin.ignore();
+	      
+	      File file(f);
+	      if(f.length()>0&&file.exists())
+		m->Addattachment(file);
+	    }
+	    while(f.length()==0||file.exists())
+	      
             client.sendmessage(m);
             client.waitresponse();
             delete dynamic_cast<Mail*>(m);
