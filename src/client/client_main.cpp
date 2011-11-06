@@ -10,6 +10,7 @@
 #include <listmessage.h>
 #include <signal.h>
 #include <stdio.h>
+#include "file.h"
 
 static void getrestrictedlength(std::string name, std::string& input, int size)
 {
@@ -114,21 +115,27 @@ int main(int argc, char **argv)
             std::cin.ignore();
 
             
-	    Message * m = new Mail(to, clientuser, subject, message);
+	    Message *m = new Mail(to, clientuser, subject, message);
 	    
-	    do
-	    {
-	      std::cout<<"Attachment (leave empty, for sending without):";
-	      std::string f="";
-	      std::cin >> f;
-	      std::cin.ignore();
-	      
-	      File file(f);
-	      if(f.length()>0&&file.exists())
-		m->Addattachment(file);
-	    }
-	    while(f.length()==0||file.exists())
-	      
+	    bool flag = true;
+	     while(flag){
+ 		std::cout<<"Attachment (leave empty, for sending without):";
+		std::string f;
+		std::getline(std::cin, f);
+		
+		
+		if(f.size()<1){
+		  break;
+		}
+		
+		File file(f);
+		if(file.exists()){
+		  dynamic_cast<Mail*>(m)->Addattachment(file);
+		  flag=false;
+		} 
+	      }
+	    
+	    
             client.sendmessage(m);
             client.waitresponse();
             delete dynamic_cast<Mail*>(m);

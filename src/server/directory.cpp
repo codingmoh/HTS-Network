@@ -45,6 +45,13 @@ void Directory::savemessage(Mail& msg)
       if (existsmaildirOtherwiseCreate(msg.receiver_, messagenumber))
       {
 
+	if(msg.attached_==true){ //anhang vorhanden
+	  std::cout<<"save file"<<std::endl;
+	  std::string saveto = pool_path_ + "/" + msg.receiver_ + "/"
+                            + messagenumber +"/";
+	  msg.GetFile()->saveto(saveto);
+	}
+	
          std::string file = pool_path_ + "/" + msg.receiver_ + "/"
                             + messagenumber + "/message.txt";
 

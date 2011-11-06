@@ -15,7 +15,7 @@ void Session::start()
 
 void Session::startrecieveing()
 {
-   Serializer::receivemessage(this->socketid_, 2048);
+   Serializer::receivemessage(this->socketid_, 20048);
 }
 
 void Session::executecommand(Message *& message)

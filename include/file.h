@@ -15,16 +15,17 @@ class File
   template<class Archive>
   void serialize(Archive & ar, const unsigned int version)
   {
-    if(exists_)
-    {
-      
+    
+//    if(exists())
+//    {
       std::ifstream ifs(filename_.c_str());
       std::string str((std::istreambuf_iterator<char>(ifs)), std::istreambuf_iterator<char>());
       rawstr_ = str;
       
       ar & rawstr_;
+      ar & filename_;
       
-    }
+//    }
   }
   
 private:
@@ -33,10 +34,12 @@ private:
   std::string rawstr_;
 public:
   File(std::string);
-  bool exists()
-  {
+  bool exists(){
+    exists_=fileexists(filename_);
     return exists_;
   };
+  bool fileexists(std::string);
+  void saveto(std::string);
   File();
   
 };
